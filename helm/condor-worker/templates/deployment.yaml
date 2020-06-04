@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "condor-worker.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "condor-worker.name" . }}
+    helm.sh/chart: {{ include "condor-worker.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "condor-worker.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "condor-worker.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "docker.aquaveo.com/tethys/condor/condor-docker/condor-worker:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: _CONDOR_CONDOR_HOST
+              value: "condor-worker"
+            - name: _CONDOR_SEC_PASSWORD_FILE
+              value: "/etc/condor/pool_password/password"
+          ports:
+            - name: condor
+              containerPort: 9618
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 9618
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 9618
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: pool-password
+              mountPath: /etc/condor/pool_password
+      volumes:
+        - name: pool-password
+          secret:
+            defaultMode: 0600
+            secretName: condor-pool-password
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

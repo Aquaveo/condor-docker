@@ -1,0 +1,5 @@
+ARG BASE_IMAGE=docker.aquaveo.com/tethys/condor/condor-docker/condor-base
+FROM $BASE_IMAGE
+
+# Set up config files
+COPY conf/condor.d/collector /etc/condor/config.d/

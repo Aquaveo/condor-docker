@@ -1,0 +1,20 @@
+ARG BASE_IMAGE=docker.aquaveo.com/tethys/condor/condor-docker/condor-base
+FROM $BASE_IMAGE
+
+# Tethys needs to be able to ssh into the scheduler
+RUN apt-get update -qq > /dev/null \
+ && apt-get install -qq -y openssh-server > /dev/null \
+ && rm -rf /var/lib/apt/lists/* \ 
+ && mkdir /run/sshd \
+ && mkdir /var/lib/condor/keys \
+ && mkdir /var/lib/condor/.ssh \
+ && chown condor /var/lib/condor/.ssh \
+ && chmod 700 /var/lib/condor/.ssh \
+ && usermod -s /bin/bash condor
+
+# Set up config files
+COPY conf/condor.d/scheduler /etc/condor/config.d/
+COPY conf/supervisor.d/sshd.conf /etc/supervisor/conf.d/
+
+# Add liveness check
+COPY htcondor-schedd-liveness /usr/local/bin/
