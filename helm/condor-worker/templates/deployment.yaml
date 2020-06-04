@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "docker.aquaveo.com/tethys/condor/condor-docker/condor-worker:{{ .Values.image.tag }}"
+          image: "aquaveollc/condor-worker:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: _CONDOR_CONDOR_HOST

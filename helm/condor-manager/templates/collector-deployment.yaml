@@ -23,7 +23,7 @@ spec:
         - name: gitlab-registry
       containers:
         - name: {{ .Chart.Name }}
-          image: "docker.aquaveo.com/tethys/condor/condor-docker/condor-collector:{{ .Values.image.tag }}"
+          image: "aquaveollc/condor-collector:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: _CONDOR_CONDOR_HOST
