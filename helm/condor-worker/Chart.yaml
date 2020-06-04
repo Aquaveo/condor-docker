@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "dev"
 description: HTCondor Worker Node
 name: condor-worker
-version: 0.1.0-dev
+version: 0.1.1-dev
