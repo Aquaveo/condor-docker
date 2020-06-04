@@ -20,7 +20,11 @@ jobs:
     - name: Set Env
       run: |
         echo ::set-env name=KANIKO_CACHE_REGISTRY::aquaveollc/condor-cache
-        echo ::set-env name=KANIKO_IMAGE::aquaveollc/condor-base
+        echo ::set-env name=KANIKO_IMAGE_BASE::aquaveollc/condor-base
+        echo ::set-env name=KANIKO_IMAGE_COLLECTOR::aquaveollc/condor-collector
+        echo ::set-env name=KANIKO_IMAGE_SCHEDULER::aquaveollc/condor-scheduler
+        echo ::set-env name=KANIKO_IMAGE_STANDALONE::aquaveollc/condor-base
+        echo ::set-env name=KANIKO_IMAGE_WORKER::aquaveollc/condor-worker
     - name: Set Tag
       run: |
         echo ::set-env name=TAG::${GITHUB_REF:10}
@@ -28,7 +32,7 @@ jobs:
     - name: Test Tag
       run: |
         echo $TAG
-    - name: build and push tag
+    - name: build and push tag for docker base
       uses: aevea/action-kaniko@v0.3.2
       with:
         # Docker registry where the image will be pushed
@@ -38,7 +42,7 @@ jobs:
         # Password used for authentication to the Docker registry
         password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
         # Image name
-        image: ${{ env.KANIKO_IMAGE }}
+        image: ${{ env.KANIKO_IMAGE_BASE }}
         # Image tag
         tag: ${{ env.TAG }}
         # Enables build cache
@@ -47,7 +51,7 @@ jobs:
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
         build_file: ${{github.workspace}}/Dockerfile
-    - name: build and push latest
+    - name: build and push tag latest for docker base
       uses: aevea/action-kaniko@v0.3.2
       with:
         # Docker registry where the image will be pushed
@@ -57,7 +61,7 @@ jobs:
         # Password used for authentication to the Docker registry
         password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
         # Image name
-        image: ${{ env.KANIKO_IMAGE }}
+        image: ${{ env.KANIKO_IMAGE_BASE }}
         # Image tag
         tag: ${{ env.TAG_LATEST }}
         # Enables build cache
@@ -66,3 +70,163 @@ jobs:
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
         build_file: ${{github.workspace}}/Dockerfile
+    - name: build and push tag for docker collector
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_COLLECTOR }}
+        # Image tag
+        tag: ${{ env.TAG }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.collector
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
+    - name: build and push tag latest for docker collector
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_COLLECTOR }}
+        # Image tag
+        tag: ${{ env.TAG_LATEST }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.collector
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
+    - name: build and push tag for docker scheduler
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_SCHEDULER }}
+        # Image tag
+        tag: ${{ env.TAG }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.scheduler
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
+    - name: build and push tag latest for docker scheduler
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_SCHEDULER }}
+        # Image tag
+        tag: ${{ env.TAG_LATEST }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.scheduler
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
+    - name: build and push tag for docker worker
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_WORKER }}
+        # Image tag
+        tag: ${{ env.TAG }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.worker
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
+    - name: build and push tag latest for docker worker
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_WORKER }}
+        # Image tag
+        tag: ${{ env.TAG_LATEST }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.worker
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
+    - name: build and push tag for docker standalone
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_STANDALONE }}
+        # Image tag
+        tag: ${{ env.TAG }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.standalone
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
+    - name: build and push tag latest for docker standalone
+      uses: aevea/action-kaniko@v0.3.2
+      with:
+        # Docker registry where the image will be pushed
+        registry: docker.io
+        # Username used for authentication to the Docker registry
+        username: ${{ secrets.DOCKER_BUILDER_USERNAME }}
+        # Password used for authentication to the Docker registry
+        password: ${{ secrets.DOCKER_BUILDER_TOKEN }}
+        # Image name
+        image: ${{ env.KANIKO_IMAGE_STANDALONE }}
+        # Image tag
+        tag: ${{ env.TAG_LATEST }}
+        # Enables build cache
+        cache: true
+        # Docker registry meant to be used as cache
+        cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
+        # Dockerfile filename
+        build_file: ${{github.workspace}}/Dockerfile.standalone
+        extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
