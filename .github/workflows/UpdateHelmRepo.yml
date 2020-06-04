@@ -20,7 +20,7 @@ jobs:
       - name: Lint Helm
         uses: WyriHaximus/github-action-helm3@v1.0.0
         with:
-          exec: helm lint ./geoserver && helm lint ./postgis
+          exec: helm lint ./helm/condor-manager/ && helm lint ./helm/condor-manager/
       - name: Package Condor Manager Helm
         uses: WyriHaximus/github-action-helm3@v1.0.0
         with:
