@@ -1,11 +1,14 @@
 # This is a basic workflow to help you get started with Actions
-name: push_commits_no_tag
+name: Push condor on commits without tag
 
 # Push to docker hub if tag has been created.
 on:
   push:
     branches:
       - '*'
+    paths-ignore:
+      - 'helm/*'
+      - 'docs/*'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

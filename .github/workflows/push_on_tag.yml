@@ -1,12 +1,12 @@
 # This is a basic workflow to help you get started with Actions
-name: push_on_tag
+name: Push Condor on Tag
 
 # Push to docker hub if tag has been created.
 on:
   push:
     tags:
       - '*'
-
+      -
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
