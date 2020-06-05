@@ -3,21 +3,21 @@ entries:
   condor-manager:
   - apiVersion: v1
     appVersion: latest
-    created: "2020-06-04T22:57:22.426030478Z"
+    created: "2020-06-05T16:45:33.717744417Z"
     description: HTCondor Manager Nodes
-    digest: bf4292beb425fbedb8a87a66b56d93aa4aae0b828092496b8c804c6dbaedda5f
+    digest: 9df634628b255151842fc77537be8708d67d695b2a33c98e4b0398c012cd0b7f
     name: condor-manager
     urls:
-    - https://aquaveo.github.io/condor-docker/condor-manager-0.1.4.tgz
-    version: 0.1.4
+    - https://aquaveo.github.io/condor-docker/condor-manager-0.1.1.tgz
+    version: 0.1.1
   condor-worker:
   - apiVersion: v1
     appVersion: dev
-    created: "2020-06-04T22:57:22.426422879Z"
+    created: "2020-06-05T16:45:33.718022718Z"
     description: HTCondor Worker Node
     digest: a1f589b091117aed09e9aa8b1d092a639f09eacd965d2c8cbe0d0e6c72cc55e2
     name: condor-worker
     urls:
     - https://aquaveo.github.io/condor-docker/condor-worker-0.1.1-dev.tgz
     version: 0.1.1-dev
-generated: "2020-06-04T22:57:22.425564178Z"
+generated: "2020-06-05T16:45:33.717256415Z"
