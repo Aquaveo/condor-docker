@@ -13,6 +13,7 @@ You can search what is inside this repo:
 ```console
 helm search repo condor-docker
 ```
+
 You should see these following charts:
 ``` console
 NAME                            CHART VERSION   APP VERSION     DESCRIPTION           
