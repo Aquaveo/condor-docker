@@ -1,3 +1,31 @@
+# Tethys Charts Repo
+This repository contains the helm chart for condor docker. These charts are designed for use by Tethys apps, and has not been tested for usability in stand-alone mode.
+
+### How to install
+This Github page is currently being build from the /docs folder in the master branch. The helm charts are located here.
+
+To add this repo, you can run this command
+```console
+helm repo add condor-docker https://aquaveo.github.io/condor-docker/
+```
+
+You can search what is inside this repo:
+```console
+helm search repo condor-docker
+```
+You should see these following charts:
+``` console
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION     
+misc-helm-chart/geoserver       0.1.12          latest          Geoserver       
+misc-helm-chart/postgis         0.1.12          latest          PostGIS Database
+```
+
+Run this command to install:
+``` console
+helm install misc-helm-chart/geoserver --generate-name
+```
+
+
 Docker-Condor
 =============
 
@@ -18,4 +46,3 @@ This project started as an attempt to get HTCondor to run nicely in a docker con
     - `helm install helm/condor-manager`
 1. Once running, deploy the Workers
     - `helm install helm/condor-worker`
-
