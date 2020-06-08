@@ -23,7 +23,7 @@ jobs:
         echo ::set-env name=KANIKO_IMAGE_BASE::aquaveollc/condor-base
         echo ::set-env name=KANIKO_IMAGE_COLLECTOR::aquaveollc/condor-collector
         echo ::set-env name=KANIKO_IMAGE_SCHEDULER::aquaveollc/condor-scheduler
-        echo ::set-env name=KANIKO_IMAGE_STANDALONE::aquaveollc/condor-base
+        echo ::set-env name=KANIKO_IMAGE_STANDALONE::aquaveollc/condor-standalone
         echo ::set-env name=KANIKO_IMAGE_WORKER::aquaveollc/condor-worker
     - name: Set Tag
       run: |
