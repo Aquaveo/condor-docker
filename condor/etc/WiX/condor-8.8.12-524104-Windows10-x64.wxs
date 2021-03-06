@@ -1,0 +1,2377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:wix="http://schemas.microsoft.com/wix/2006/wi" xmlns:fire="http://schemas.microsoft.com/wix/FirewallExtension">
+    <Product Id="7b2aa2f0-afea-3e7b-835f-97b7cfa43c1e" Name="condor-8.8.12" Language="1033" Version="8.8.12" Manufacturer="Condor Team - University of Wisconsin Madison" UpgradeCode="EA1CEE00-C44F-4BC4-8035-440AA32C1F33">
+        <Package InstallerVersion="405" Compressed="yes" />
+        <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="INSTALLDIR" Name="condor">
+                <Merge Id="VCCRT" Language="1033" DiskId="1" SourceFile="C:/Program Files (x86)/Common Files/Merge Modules/Microsoft_VC140_CRT_x64.msm" />
+                <Component Id="CondorRegNEnv" Guid="E282D017-976B-4685-A330-5180B27277C0">
+                    <RegistryKey Root="HKLM" Key="SOFTWARE\Condor" Action="createAndRemoveOnUninstall">
+                        <RegistryValue Type="string" Name="CONDOR_CONFIG" Value="[INSTALLDIR]condor_config" KeyPath="yes" />
+                        <RegistryValue Type="string" Name="RELEASE_DIR" Value="[INSTALLDIR]" />
+                        <RegistryValue Type="string" Name="SUBMITJOBS" Value="[SUBMITJOBS]" />
+                        <RegistryValue Type="string" Name="NEWPOOL" Value="[NEWPOOL]" />
+                        <RegistryValue Type="string" Name="POOLNAME" Value="[POOLNAME]" />
+                        <RegistryValue Type="string" Name="POOLHOSTNAME" Value="[POOLHOSTNAME]" />
+                        <RegistryValue Type="string" Name="ACCOUNTINGDOMAIN" Value="[ACCOUNTINGDOMAIN]" />
+                        <RegistryValue Type="string" Name="CONDOREMAIL" Value="[CONDOREMAIL]" />
+                        <RegistryValue Type="string" Name="SMTPSERVER" Value="[SMTPSERVER]" />
+                        <RegistryValue Type="string" Name="HOSTALLOWREAD" Value="[HOSTALLOWREAD]" />
+                        <RegistryValue Type="string" Name="HOSTALLOWWRITE" Value="[HOSTALLOWWRITE]" />
+                        <RegistryValue Type="string" Name="HOSTALLOWADMINISTRATOR" Value="[HOSTALLOWADMINISTRATOR]" />
+                        <RegistryValue Type="string" Name="RUNJOBS" Value="[RUNJOBS]" />
+                        <RegistryValue Type="string" Name="VACATEJOBS" Value="[VACATEJOBS]" />
+                        <RegistryValue Type="string" Name="USEVMUNIVERSE" Value="[USEVMUNIVERSE]" />
+                        <RegistryValue Type="string" Name="VMMAXNUMBER" Value="[VMMAXNUMBER]" />
+                        <RegistryValue Type="string" Name="VMMEMORY" Value="[VMMEMORY]" />
+                        <RegistryValue Type="string" Name="VMNETWORKING" Value="[VMNETWORKING]" />
+                        <RegistryValue Type="string" Name="PERLLOCATION" Value="[PERLLOCATION]" />
+                    </RegistryKey>
+                    <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\condor" Action="createAndRemoveOnUninstall">
+                        <RegistryValue Type="integer" Name="DelayedAutostart" Value="1" />
+                        <RegistryValue Type="multiString" Name="DependOnService" Value="Dhcp" />
+                    </RegistryKey>
+                    <Environment Id="CondorBin" Action="set" Name="PATH" Part="last" Permanent="no" System="yes" Value="[INSTALLDIR]bin\" />
+                    <Environment Id="CondorLibPython" Action="set" Name="PYTHONPATH" Part="last" Permanent="no" System="yes" Value="[INSTALLDIR]lib\python;[INSTALLDIR]bin" />
+                </Component>
+                <Component Id="CondorKBDDReg" Guid="3C40071C-6DB9-43AD-8058-920623026740">
+                    <RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run">
+                        <RegistryValue Type="string" Name="condor_kbdd" Value="&quot;[INSTALLDIR]bin\condor_kbdd.exe&quot;" />
+                    </RegistryKey>
+                    <Condition>RUNJOBS = "I" Or RUNJOBS = "C"</Condition>
+                </Component>
+                <Directory Id="LogDir" Name="log">
+                    <Component Id="CreatingLogDir" Guid="F6731DF5-5E28-405F-82EC-5F269FD434E5" Permanent="no" NeverOverwrite="yes">
+                        <CreateFolder />
+                    </Component>
+                </Directory>
+                <Directory Id="ExecuteDir" Name="execute">
+                    <Component Id="CreatingExecuteDir" Guid="389E40FD-5B03-4740-B42A-A9F81AEB853D" Permanent="no" NeverOverwrite="yes">
+                        <CreateFolder />
+                    </Component>
+                </Directory>
+                <Directory Id="SpoolDir" Name="spool">
+                    <Component Id="CreatingSpoolDir" Guid="A1F2F929-7417-4C67-851C-1645D587540A" Permanent="no" NeverOverwrite="yes">
+                        <CreateFolder />
+                    </Component>
+                </Directory>
+            </Directory>
+        </Directory>
+        <Condition Message="This application is only supported on Windows XP(SP2) or higher">
+          (VersionNT &gt;= 501)
+        </Condition>
+        <Property Id="UPGRADEFOUND" Secure="yes" />
+        <Property Id="NEWPRODUCTFOUND" Secure="yes" />
+        <Upgrade Id="EA1CEE00-C44F-4BC4-8035-440AA32C1F33">
+            <UpgradeVersion Language="1033" Minimum="7.5.5" IncludeMinimum="yes" Maximum="8.8.12" IncludeMaximum="no" Property="UPGRADEFOUND" OnlyDetect="no" RemoveFeatures="ALL" />
+            <UpgradeVersion Language="1033" Minimum="8.8.12" IncludeMinimum="no" OnlyDetect="yes" Property="NEWPRODUCTFOUND" />
+            <UpgradeVersion Language="1033" Maximum="7.5.5" IncludeMaximum="no" OnlyDetect="yes" Property="TOOOLDFOUND" />
+            <UpgradeVersion Language="1033" Maximum="7.5.5" Minimum="7.5.5" IncludeMaximum="yes" IncludeMinimum="yes" Property="SEVENFIVEFIVEFOUND" />
+        </Upgrade>
+        <CustomAction Id="PreventDowngrade" Error="Newer version of HTCondor already installed." />
+        <CustomAction Id="PreventUpgrade" Error="HTCondor cannot upgrade from the installed version due to issues with migrating the configuration.  Please backup the configuration and uninstall HTCondor first before attempting to install this version of HTCondor." />
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+        <Property Id="JVMVERSION">
+            <RegistrySearch Id="JavaVersionSearch" Root="HKLM" Type="raw" Key="SOFTWARE\JavaSoft\Java Runtime Environment" Name="CurrentVersion" />
+        </Property>
+        <Property Id="JVMDIR">
+            <RegistrySearch Id="JavaDirSearch" Root="HKLM" Type="raw" Key="SOFTWARE\JavaSoft\Java Runtime Environment\[JVMVERSION]" Name="JavaHome" />
+        </Property>
+        <Property Id="JVMFOUND">
+            <DirectorySearch Id="JavaDirValidate" Path="[JVMDIR]\bin">
+                <FileSearch Name="java.exe" />
+            </DirectorySearch>
+        </Property>
+        <SetProperty Id="JVMLOCATION" Value="[JVMDIR]\bin\java.exe" After="AppSearch">JVMFOUND</SetProperty>
+        <Property Id="OLD_INSTALLDIR">
+            <RegistrySearch Id="INSTALLDIR_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="RELEASE_DIR" />
+        </Property>
+        <Property Id="OLD_SUBMITJOBS">
+            <RegistrySearch Id="SUBMITJOBS_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="SUBMITJOBS" />
+        </Property>
+        <Property Id="OLD_NEWPOOL">
+            <RegistrySearch Id="NEWPOOL_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="NEWPOOL" />
+        </Property>
+        <Property Id="OLD_POOLNAME">
+            <RegistrySearch Id="POOLNAME_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="POOLNAME" />
+        </Property>
+        <Property Id="OLD_POOLHOSTNAME">
+            <RegistrySearch Id="POOLHOSTNAME_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="POOLHOSTNAME" />
+        </Property>
+        <Property Id="OLD_ACCOUNTINGDOMAIN">
+            <RegistrySearch Id="ACCOUNTINGDOMAIN_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="ACCOUNTINGDOMAIN" />
+        </Property>
+        <Property Id="OLD_CONDOREMAIL">
+            <RegistrySearch Id="CONDOREMAIL_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="CONDOREMAIL" />
+        </Property>
+        <Property Id="OLD_SMTPSERVER">
+            <RegistrySearch Id="SMTPSERVER_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="SMTPSERVER" />
+        </Property>
+        <Property Id="OLD_HOSTALLOWREAD">
+            <RegistrySearch Id="HOSTALLOWREAD_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="HOSTALLOWREAD" />
+        </Property>
+        <Property Id="OLD_HOSTALLOWWRITE">
+            <RegistrySearch Id="HOSTALLOWWRITE_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="HOSTALLOWWRITE" />
+        </Property>
+        <Property Id="OLD_HOSTALLOWADMINISTRATOR">
+            <RegistrySearch Id="HOSTALLOWADMINISTRATOR_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="HOSTALLOWADMINISTRATOR" />
+        </Property>
+        <Property Id="OLD_RUNJOBS">
+            <RegistrySearch Id="RUNJOBS_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="RUNJOBS" />
+        </Property>
+        <Property Id="OLD_VACATEJOBS">
+            <RegistrySearch Id="VACATEJOBS_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="VACATEJOBS" />
+        </Property>
+        <Property Id="OLD_USEVMUNIVERSE">
+            <RegistrySearch Id="USEVMUNIVERSE_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="USEVMUNIVERSE" />
+        </Property>
+        <Property Id="OLD_VMMAXNUMBER">
+            <RegistrySearch Id="VMMAXNUMBER_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="VMMAXNUMBER" />
+        </Property>
+        <Property Id="OLD_VMMEMORY">
+            <RegistrySearch Id="VMMEMORY_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="VMMEMORY" />
+        </Property>
+        <Property Id="OLD_VMNETWORKING">
+            <RegistrySearch Id="VMNETWORKING_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="VMNETWORKING" />
+        </Property>
+        <Property Id="OLD_PERLLOCATION">
+            <RegistrySearch Id="PERLLOCATION_search" Root="HKLM" Type="raw" Key="SOFTWARE\Condor" Name="PERLLOCATION" />
+        </Property>
+        <Property Id="POOLHOSTNAME" Value="$$(IP_ADDRESS)" />
+        <Property Id="HOSTALLOWREAD" Value="*" />
+        <Property Id="HOSTALLOWWRITE" Value="$$(CONDOR_HOST), $$(IP_ADDRESS), *.cs.wisc.edu" />
+        <Property Id="HOSTALLOWADMINISTRATOR" Value="$$(IP_ADDRESS)" />
+        <Property Id="VMVERSION" Value="server1.0" />
+        <Property Id="VMMEMORY" Value="256" />
+        <Property Id="VMMAXNUMBER" Value="$$(NUM_CPUS)" />
+        <Property Id="VMNETWORKING" Value="N" />
+        <Property Id="PERLLOCATION" Value="PERL.EXE" />
+        <SetDirectory Id="TARGETDIR" Value="[INSTALLDIR]" Sequence="execute" />
+        <Property Id="LOCALCONFIG" Value="$$(LOCAL_DIR)\condor_config.local" />
+        <SetProperty Id="INSTALLDIR" Value="[OLD_INSTALLDIR]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="SUBMITJOBS" Value="[OLD_SUBMITJOBS]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="NEWPOOL" Value="[OLD_NEWPOOL]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="POOLNAME" Value="[OLD_POOLNAME]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="POOLHOSTNAME" Value="[OLD_POOLHOSTNAME]" After="AppSearch">UPGRADEFOUND AND OLD_POOLHOSTNAME</SetProperty>
+        <SetProperty Id="ACCOUNTINGDOMAIN" Value="[OLD_ACCOUNTINGDOMAIN]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="CONDOREMAIL" Value="[OLD_CONDOREMAIL]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="SMTPSERVER" Value="[OLD_SMTPSERVER]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="HOSTALLOWREAD" Value="[OLD_HOSTALLOWREAD]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="HOSTALLOWWRITE" Value="[OLD_HOSTALLOWWRITE]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="HOSTALLOWADMINISTRATOR" Value="[OLD_HOSTALLOWADMINISTRATOR]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="RUNJOBS" Value="[OLD_RUNJOBS]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="VACATEJOBS" Value="[OLD_VACATEJOBS]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="USEVMUNIVERSE" Value="[OLD_USEVMUNIVERSE]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="VMMAXNUMBER" Value="[OLD_VMMAXNUMBER]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="VMMEMORY" Value="[OLD_VMMEMORY]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <SetProperty Id="PERLLOCATION" Value="[OLD_PERLLOCATION]" After="AppSearch">UPGRADEFOUND</SetProperty>
+        <CustomAction Id="CondorConfigLocal" Script="vbscript">
+          
+            Function CreateConfig()
+              Set fso = CreateObject("Scripting.FileSystemObject")
+              path = Session.Property("INSTALLDIR")
+              Set installpath = fso.GetFolder(path)
+              strippedPath = installpath.ShortPath
+              Set scriptFile = fso.OpenTextFile(strippedPath &amp; "\etc\WiX\config.vbs",1)
+              sText = scriptFile.ReadAll
+              scriptFile.close
+              
+              ExecuteGlobal sText
+            End Function
+            
+            CreateConfig
+           
+        </CustomAction>
+        <InstallExecuteSequence>
+            <Custom Action="PreventDowngrade" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+            <Custom Action="PreventUpgrade" After="FindRelatedProducts">TOOOLDFOUND</Custom>
+            <RemoveExistingProducts After="InstallValidate">UPGRADEFOUND</RemoveExistingProducts>
+            <Custom Action="CondorConfigLocal" After="InstallFinalize">Not Installed</Custom>
+            <ScheduleReboot After="CondorConfigLocal" />
+        </InstallExecuteSequence>
+        <InstallUISequence>
+            <Custom Action="PreventDowngrade" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+            <Custom Action="PreventUpgrade" After="FindRelatedProducts">TOOOLDFOUND</Custom>
+        </InstallUISequence>
+        <Feature Id="CondorWindows" Title="HTCondor Installation" Level="1" Display="expand">
+            <Feature Id="Installation" Title="HTCondor Installation Files" Level="1" ConfigurableDirectory="INSTALLDIR">
+                <ComponentRef Id="cmp000B929D5CCA38014BBB189A8D460AF8" />
+                <ComponentRef Id="cmp0106807038EDF7D05591D6B691C164F4" />
+                <ComponentRef Id="cmp02E4643368E9094E4F983CB27040FBFF" />
+                <ComponentRef Id="cmp0311E910A10A2693A2358BA92799B98B" />
+                <ComponentRef Id="cmp033D0773E2C87F1AD0ABB69285ABCBA4" />
+                <ComponentRef Id="cmp034D9789D49264E6C7EAF1C4FC024E84" />
+                <ComponentRef Id="cmp04ACC208F5B1205FFFEBD2D88430345E" />
+                <ComponentRef Id="cmp07D396990B1315B990654E303B80CFA0" />
+                <ComponentRef Id="cmp08F21681034CAFDB7D11F341EDBF9A3B" />
+                <ComponentRef Id="cmp0CCBA76B7B3D0663247ABABC82441030" />
+                <ComponentRef Id="cmp0CDF795198704A944864159F808C966C" />
+                <ComponentRef Id="cmp0E613D0628BBB5654677EFDD4C3362A7" />
+                <ComponentRef Id="cmp0E86E61C7A05353B9692B9CECF327E98" />
+                <ComponentRef Id="cmp0F0A785DE1EF3DA693546BF715C6105F" />
+                <ComponentRef Id="cmp0FEEA4BD0563BC6D664CEA48A2833A09" />
+                <ComponentRef Id="cmp1051217F6DC73F3500C6320A1D6D3012" />
+                <ComponentRef Id="cmp136067798E67C9C688EF773C04C28584" />
+                <ComponentRef Id="cmp13E938DF34433EC7CC8BAA3CAB8E6FE0" />
+                <ComponentRef Id="cmp14FAF3F15EF5180FFB438D673F98D7A9" />
+                <ComponentRef Id="cmp154A096C77BD8BA046E08A7BAC1DEBF5" />
+                <ComponentRef Id="cmp1756811AF44EBBAABF4A07AF108AF26C" />
+                <ComponentRef Id="cmp1AB6CD0D99AE8FD39BA76789141A71A2" />
+                <ComponentRef Id="cmp1B0067D4866C4767F728D4D22F61858A" />
+                <ComponentRef Id="cmp1CAA4FCCA05E18D4DD43D1DAE9D4E310" />
+                <ComponentRef Id="cmp1CB8539DF110C2CBE3FF232D74A455D1" />
+                <ComponentRef Id="cmp1D4F98A108B5212EF8EAFA60444E2813" />
+                <ComponentRef Id="cmp2127CAAAAE00A5D437834277C607AEB2" />
+                <ComponentRef Id="cmp21D7A46DB4AA381D431453802259851C" />
+                <ComponentRef Id="cmp2243E26D2232243ADCB3E90E11B856FC" />
+                <ComponentRef Id="cmp23DA8AD33BB85452EF63D4AA75266F0B" />
+                <ComponentRef Id="cmp240AB06B15EF5DC7FC9C14559EC4834D" />
+                <ComponentRef Id="cmp24A2520100C821BB9F2378982DE18672" />
+                <ComponentRef Id="cmp25141ACF6F99B5891BA8BC1DFF4EA7E0" />
+                <ComponentRef Id="cmp25B82623796E2F63C793AB87EB901C0C" />
+                <ComponentRef Id="cmp26867891D235C4A16F01ECA5F19AA89D" />
+                <ComponentRef Id="cmp26A41D912BADDC75679DE06783178F94" />
+                <ComponentRef Id="cmp2715A781B1FE50FBB4056FD27114CF08" />
+                <ComponentRef Id="cmp299E55611BCEB75DD7BEB2FDBDA6E1E6" />
+                <ComponentRef Id="cmp2C00A9A1E9760C77B1D9694223E4697F" />
+                <ComponentRef Id="cmp2C06437A129F0556C2A01735397C442B" />
+                <ComponentRef Id="cmp307FA11D2FC9339E6950618BF2310868" />
+                <ComponentRef Id="cmp30BB4B01596415A7ABDDA0CC49AF4B89" />
+                <ComponentRef Id="cmp30F97C84658360C45EF3F831A9FD9B56" />
+                <ComponentRef Id="cmp314539DAE31CC274F5B3AFFC9488BA4D" />
+                <ComponentRef Id="cmp32095E6FD01B0AC759F21CF518118053" />
+                <ComponentRef Id="cmp32A917CFAEA8C7B1E66DAC5D04C862B9" />
+                <ComponentRef Id="cmp32AA8DD2E803ED8A04568909FAF33E0A" />
+                <ComponentRef Id="cmp32D4C2B4BF8100D172B213DC1DFA1673" />
+                <ComponentRef Id="cmp337AE4C111D869A3AED7A003C50A3DFD" />
+                <ComponentRef Id="cmp35122720286AE571251A7B27410FE331" />
+                <ComponentRef Id="cmp351950C19821FBA43C63248FC04A67B7" />
+                <ComponentRef Id="cmp35F7CD153EBF5222AC3207BBD1680D04" />
+                <ComponentRef Id="cmp37A3F0D05056BF0AA5842C2AA082534D" />
+                <ComponentRef Id="cmp38C6C776A515F3B3A3C6169BFF434D73" />
+                <ComponentRef Id="cmp396DCE3C65B545B1DBC50B1CEBEFBA21" />
+                <ComponentRef Id="cmp3C8252C89E026C1871E5F78DB190AE2B" />
+                <ComponentRef Id="cmp3CD3FF6E06A7621630C03E5939C0BE02" />
+                <ComponentRef Id="cmp3D125D67EAB1E3C99281E6A89991C03C" />
+                <ComponentRef Id="cmp3D3171DC66E6FEC7750A6EB2F72CA5DD" />
+                <ComponentRef Id="cmp3E4D20936157D842B3398D9563D1AB70" />
+                <ComponentRef Id="cmp3F24245C77F6A070154EA8A7EBA5B982" />
+                <ComponentRef Id="cmp401724DDDB1BD7E1875E5F79EDB2B233" />
+                <ComponentRef Id="cmp4051135063E0379F3545490F91AD3866" />
+                <ComponentRef Id="cmp41F7B57AE2D28FE4C07A6810D3AE6D07" />
+                <ComponentRef Id="cmp4294BF39E67ECE72BBCCB3EA4503E655" />
+                <ComponentRef Id="cmp437AF01A838A460C439D6CF4B6DB2452" />
+                <ComponentRef Id="cmp44E5FB5F231E495D660A1DF05295A5CC" />
+                <ComponentRef Id="cmp46B6868B449AB5B8E4ABA5658D717C7C" />
+                <ComponentRef Id="cmp4B5CF9CE7D4351669B207AE1F4878A4F" />
+                <ComponentRef Id="cmp4BE8E320AA9D9CC6390AE3638F2411D0" />
+                <ComponentRef Id="cmp4D7244FC42A2192733E1B57ADDB4C644" />
+                <ComponentRef Id="cmp4DF00E84E9AFEE1A739CD716AAA5F2DE" />
+                <ComponentRef Id="cmp4E3ABB62C733614AF89A8C24CF6C2B31" />
+                <ComponentRef Id="cmp4E9910729AEA4D8738C4CEFC9DA8933B" />
+                <ComponentRef Id="cmp4F6B7BAB13118E807BCF9A11EF48630D" />
+                <ComponentRef Id="cmp5175465A611D722BC34CB486909F4FCD" />
+                <ComponentRef Id="cmp5195C6CDDD180785B286ACF1E82B74AE" />
+                <ComponentRef Id="cmp52C0DF106767FFEE1ECCAEE6BCA7194F" />
+                <ComponentRef Id="cmp5302F846570BA71572188BABAEE0DFB9" />
+                <ComponentRef Id="cmp53CDA21012411ADB13DD621F81291C5B" />
+                <ComponentRef Id="cmp55B84B6B0C886A5689D1E3912CFF044A" />
+                <ComponentRef Id="cmp55FAE3BAD1983E3C6FA282271E0BC995" />
+                <ComponentRef Id="cmp55FF823DE19DFA1A7FE43FE8B81DF186" />
+                <ComponentRef Id="cmp568C19BFABA3775C8CDFE2A9D20AC08A" />
+                <ComponentRef Id="cmp569334F845447E0C6422B9634DB2C109" />
+                <ComponentRef Id="cmp575BA0EFAD6A70DABF6689B4C8BD5E90" />
+                <ComponentRef Id="cmp5962A9D959D79B9E12046750D02FD980" />
+                <ComponentRef Id="cmp59B8C168A544C8F9A0FDFA32DF8AF3DA" />
+                <ComponentRef Id="cmp5A06ACC0C77D7A3AD91172A8E7BDAC59" />
+                <ComponentRef Id="cmp5C2095B97991587DA895365A26530268" />
+                <ComponentRef Id="cmp5DDD071FC7B1FFECBAEE58C92D21A500" />
+                <ComponentRef Id="cmp5E289C755023897DE5B1D8077919FD4D" />
+                <ComponentRef Id="cmp5F33E3719332ACDFB6837E44B62C4434" />
+                <ComponentRef Id="cmp6084DFFA7DF2BF8276B3C93D946A363B" />
+                <ComponentRef Id="cmp608955D0B29184385B4E8EAAF651B2A1" />
+                <ComponentRef Id="cmp60D3B9926DAFB0833A6385A7529672FB" />
+                <ComponentRef Id="cmp6102CCABC3E490B0289358D3718FC917" />
+                <ComponentRef Id="cmp6106B5E1037EE4B34945C2448BF44C79" />
+                <ComponentRef Id="cmp61B6EE6FE1103AFF9643BDA853EA26BE" />
+                <ComponentRef Id="cmp625109654BC98999738D6CA46CA7D0F5" />
+                <ComponentRef Id="cmp629FDCB92E0BACA0DB77F580C6903F21" />
+                <ComponentRef Id="cmp6303418688F0AEE3B4F7DB4D8588A7A5" />
+                <ComponentRef Id="cmp63A83A7FE9DF44994DA21EC9FD8165D9" />
+                <ComponentRef Id="cmp65E9F429A78395A5018B035901735134" />
+                <ComponentRef Id="cmp686CCB54CD75C01DF4313679DC6129F3" />
+                <ComponentRef Id="cmp6922A3A4535FE4A1CDD451D891A38C9A" />
+                <ComponentRef Id="cmp69CA436A7F38035F5C4D26503D46D018" />
+                <ComponentRef Id="cmp6A561F5152FB1622791FD7C90496DF9E" />
+                <ComponentRef Id="cmp6B00F9BEEE028E7D2A8C6BD785F1DD81" />
+                <ComponentRef Id="cmp6C92CFE7D774A4D56FF8BA8B6DFC5306" />
+                <ComponentRef Id="cmp6E64A3148F67B45383022490C65A50B6" />
+                <ComponentRef Id="cmp6F541967308FDE28DCAE939A53B54952" />
+                <ComponentRef Id="cmp6FC394B15AAA3D585B7D709E6143D5B4" />
+                <ComponentRef Id="cmp70294F4E33A193057DEDEC95DF1EE8AD" />
+                <ComponentRef Id="cmp72A9C20865C9E42A1575A47E71DBCFFA" />
+                <ComponentRef Id="cmp72B37B28DC79D827E2B1F7B335E7A17B" />
+                <ComponentRef Id="cmp743B50C4F6AE2E669C903709D897A1A5" />
+                <ComponentRef Id="cmp75DA0764AB90797B0E6EA9B14EA24FB4" />
+                <ComponentRef Id="cmp75DEC7788ACE00EE67D36380E9E05D08" />
+                <ComponentRef Id="cmp76A1D54CBE7CB71509C75BD3932E505E" />
+                <ComponentRef Id="cmp7773632C251243D14A0BCFB656A62974" />
+                <ComponentRef Id="cmp779C369BD3745AED6AC05337F11B312E" />
+                <ComponentRef Id="cmp7A0A418F594563C75741D08CB6827556" />
+                <ComponentRef Id="cmp7ADED3945D450E33EB536B4BEDB565CD" />
+                <ComponentRef Id="cmp7C15E8CF8D9D986F487175C1D26D1155" />
+                <ComponentRef Id="cmp7CADEB9DFE79337344C0C8848BD57888" />
+                <ComponentRef Id="cmp7D10945914FA552C951CBCF83B839025" />
+                <ComponentRef Id="cmp7EF5E6AFABB2FD4E2F4F2F12E1476A12" />
+                <ComponentRef Id="cmp80996C1C0FE0EA1B3F144C9157564CB9" />
+                <ComponentRef Id="cmp81E14563F901F7FB2F17851420E7876A" />
+                <ComponentRef Id="cmp81EE0D1B3EFC0DBB43F1FF0058930166" />
+                <ComponentRef Id="cmp82BCA43C9081472EE08A6BDBEA5D40E4" />
+                <ComponentRef Id="cmp830E545E84F0876C3FDE696930663963" />
+                <ComponentRef Id="cmp8392FAA11079B83166815B9A948A8461" />
+                <ComponentRef Id="cmp83F25892C7EC9798ABF1532DB82BB40B" />
+                <ComponentRef Id="cmp8445FDF07649BF5D7A6D668D96DC2A30" />
+                <ComponentRef Id="cmp86F3A91287387F1A29E7FE62B01A8297" />
+                <ComponentRef Id="cmp8732B97D7ACA30B3D222C1F81322FA13" />
+                <ComponentRef Id="cmp8741B9E98FB026A11A312DC4100FB003" />
+                <ComponentRef Id="cmp8814B75F3FC83333CF268D5E2B4C5204" />
+                <ComponentRef Id="cmp88DA6E39A0546898C35D706814A8CA15" />
+                <ComponentRef Id="cmp8A4583DE181CC57ECFE44B0AF42B4438" />
+                <ComponentRef Id="cmp8A6FEC7800525161B803A95A201692CE" />
+                <ComponentRef Id="cmp8ABBF6E73A9AE78090559F1501E4E554" />
+                <ComponentRef Id="cmp8B458742889E4C29F96F594C252B4F86" />
+                <ComponentRef Id="cmp8C43036935B1A60DBA0608781B06CADD" />
+                <ComponentRef Id="cmp8C5CF4D1E4E678F71965642A1E6264E9" />
+                <ComponentRef Id="cmp8DF9CE537A78A50AAB7EEB25AD9F0BDB" />
+                <ComponentRef Id="cmp900AC3E74213392CC780E884A80CE9E4" />
+                <ComponentRef Id="cmp91D21A4DE311461F84C53A363629EB55" />
+                <ComponentRef Id="cmp927103D9496B7EE841F27437CB9449A4" />
+                <ComponentRef Id="cmp9449BDC232102BFA0FC672F6E0BFC825" />
+                <ComponentRef Id="cmp95E9D9403E260FB08820A3B25217ABAF" />
+                <ComponentRef Id="cmp96FB285F40D7E23933E9C32277D7C873" />
+                <ComponentRef Id="cmp9787C5A5372F63165F0DA9442F1548B4" />
+                <ComponentRef Id="cmp9831E2F600D85FE8CA04214596BF3748" />
+                <ComponentRef Id="cmp989A53ADED10D59D7D33DC85F3D8031B" />
+                <ComponentRef Id="cmp992B8773051E77E6B6FC3C57C6A1A727" />
+                <ComponentRef Id="cmp9A0E0F9B694CCED777F455EAADBFB802" />
+                <ComponentRef Id="cmp9A0EA5F3F057B75EC6E4B81933380C38" />
+                <ComponentRef Id="cmp9A4C136E9A2A0C80FFD796AC538B8C43" />
+                <ComponentRef Id="cmp9CA7103E9D128AA79672C244936E6E68" />
+                <ComponentRef Id="cmp9CD3F9D37A1A9614020C035BFE9334B9" />
+                <ComponentRef Id="cmp9D3FC1A96448CBA30C25D440FF6E1853" />
+                <ComponentRef Id="cmp9EFECDAA4ED2D1F98C0D05E36085D196" />
+                <ComponentRef Id="cmp9F9FA27DF407A806ED6DEED2A646C259" />
+                <ComponentRef Id="cmpA1332B4B741FBDF6E5A5F2F6A6297E6E" />
+                <ComponentRef Id="cmpA1B64C9FDC11A7D8DE4F2D24A39067A7" />
+                <ComponentRef Id="cmpA21558B490F0C13A979E25F231AB8311" />
+                <ComponentRef Id="cmpA31E5C943B03F23FEA37E8C1B3D02F38" />
+                <ComponentRef Id="cmpA3D8E9F6F2C32F2A77A3982A141A8545" />
+                <ComponentRef Id="cmpA42465953D76615835E6D015B5578D57" />
+                <ComponentRef Id="cmpA4D567FC3A53B28675EF63A423251739" />
+                <ComponentRef Id="cmpA51FFE47D97FA36FADC39F496DBFDE4F" />
+                <ComponentRef Id="cmpA59C563A183F2ABC6B2990B9BC55DE75" />
+                <ComponentRef Id="cmpA59E0275C55917AFE373A56B7201706D" />
+                <ComponentRef Id="cmpA602D9B98C470A4CB2DEB1D1B5EBA31E" />
+                <ComponentRef Id="cmpA68458731ECFC48D91CFC45F193A1E1C" />
+                <ComponentRef Id="cmpA69076F3C4FF3CE69000E54B500A7EAD" />
+                <ComponentRef Id="cmpA8D976F1388E3F0B1023CDEA1D6F515B" />
+                <ComponentRef Id="cmpA90EFAD2B63E7D33F510DB3B6811ABD1" />
+                <ComponentRef Id="cmpA98424B88D320F6A640F9E8AB4F21DEC" />
+                <ComponentRef Id="cmpA9DE0719F32C2819C810BF7BFF9CC222" />
+                <ComponentRef Id="cmpAC1131CEC3963E6DBB95BEE43D9AD386" />
+                <ComponentRef Id="cmpADB184D2BD95409DC7C44EAAF7FC533F" />
+                <ComponentRef Id="cmpAE44F35F5016DA1668EE3921CA64127B" />
+                <ComponentRef Id="cmpAF0B4587109E2E96EAD0CA624848C774" />
+                <ComponentRef Id="cmpAFCE6610D57910E69506722A545FBD95" />
+                <ComponentRef Id="cmpB075E7B0E2F78D236CEB8B6C41791C00" />
+                <ComponentRef Id="cmpB15B82220408F21CD055BD242948BF39" />
+                <ComponentRef Id="cmpB1ACFA6FB5B7E566AA6C9745118D679A" />
+                <ComponentRef Id="cmpB3CA50C7621926E43A74A76C810060FA" />
+                <ComponentRef Id="cmpB52448D77BC39D340669023A17A6CAEE" />
+                <ComponentRef Id="cmpB6131534035B1FB59DAA7DF4E2BE7D55" />
+                <ComponentRef Id="cmpB6AAF000BD0A7963BC333DD050BB9B6C" />
+                <ComponentRef Id="cmpB74493D67F878B4772391486FF600DA1" />
+                <ComponentRef Id="cmpB84A0CAA0EA1038C57167FA309E00818" />
+                <ComponentRef Id="cmpB90E7144B62E2AF135E6CB597B30D310" />
+                <ComponentRef Id="cmpB985ACCD33900464FE475654714521B7" />
+                <ComponentRef Id="cmpBB8D7F5206BF6BEA16844E733E68767F" />
+                <ComponentRef Id="cmpBBF96B97E9C407B5619CC0DDAAD6F057" />
+                <ComponentRef Id="cmpBC29331B008E3FC57DC3F77FCEDBFD94" />
+                <ComponentRef Id="cmpBCC296EA90A6032D41B349BC67699227" />
+                <ComponentRef Id="cmpBE1BC15D96ED57A943209265CB16186D" />
+                <ComponentRef Id="cmpBE515B56962657AC806D2EF415960E30" />
+                <ComponentRef Id="cmpC053CB0CE9DB86F4322A57960DC3F2B8" />
+                <ComponentRef Id="cmpC0F6E6228407BDC58E43FEE98DAFCA23" />
+                <ComponentRef Id="cmpC28365B03086280BD86648C930F777D3" />
+                <ComponentRef Id="cmpC52ED270E7B511873A8B200915C85C2D" />
+                <ComponentRef Id="cmpC579D352F5AD6A1AA45649A1ADDBC81E" />
+                <ComponentRef Id="cmpC653AD3940DE442610E3D1183216007D" />
+                <ComponentRef Id="cmpCA62169080E46D1CE1D34F2CE7C252BC" />
+                <ComponentRef Id="cmpCD635A63DD791E39CB9DAAF139CE2839" />
+                <ComponentRef Id="cmpCF0A805A171E66F337F4F3F2615CF8E1" />
+                <ComponentRef Id="cmpCF20D087853C3DDAC3F437A1ED5DE431" />
+                <ComponentRef Id="cmpD18B43304D2CD44DB10AE73EAFDF8563" />
+                <ComponentRef Id="cmpD219A7A2AD66BD1310720F3861620122" />
+                <ComponentRef Id="cmpD292C81021C2C0A6C8E9EEA1835EFC49" />
+                <ComponentRef Id="cmpD3FCEA6811EAD2996C579889FF89C34B" />
+                <ComponentRef Id="cmpD412D8AB1A268A6803306009F5B000DC" />
+                <ComponentRef Id="cmpD5A66DDEBA7C750F84746AEEFE3CD75E" />
+                <ComponentRef Id="cmpD7F342A23236ED6DC084DBA71AF3A664" />
+                <ComponentRef Id="cmpD8BCAA07057D009781E5AF4C2CC6E159" />
+                <ComponentRef Id="cmpD8CF9699ED03FA2F94440FD9E525CAFF" />
+                <ComponentRef Id="cmpD94A19E16B99F13852F114F6B0A36F5E" />
+                <ComponentRef Id="cmpD9B0468E0E73CD11AFB9A2649FFC27D5" />
+                <ComponentRef Id="cmpDADD25BEC2C82272F13A24CB519925E6" />
+                <ComponentRef Id="cmpDBC371BF3A0C0501EEB64BEAAEAB665F" />
+                <ComponentRef Id="cmpDD6E78D7430B322850A7759ED286F76D" />
+                <ComponentRef Id="cmpDE8B9CF117C193C5C0F3FECECB957831" />
+                <ComponentRef Id="cmpDEAD75116650E090C12D55398C5B749B" />
+                <ComponentRef Id="cmpDF29CAA17FCCD4C0050BD95CAFAD8A3A" />
+                <ComponentRef Id="cmpDF683EB67393A91969064BEBAFB1123B" />
+                <ComponentRef Id="cmpE02329A2E2163C3DC1F58125A71DF42F" />
+                <ComponentRef Id="cmpE0A6AB270028E71D87B3DE8D3FF27F81" />
+                <ComponentRef Id="cmpE24A9E2B220141015932D6F98CD6766B" />
+                <ComponentRef Id="cmpE4D2FC09EE2573F55A1D44049FBAD7E9" />
+                <ComponentRef Id="cmpE4D4CB0A15F4D472DF0214817242BEF7" />
+                <ComponentRef Id="cmpE5A107023356BCB2F440F3C4CF71464C" />
+                <ComponentRef Id="cmpE7DEAF87E00074F641E37265C858098B" />
+                <ComponentRef Id="cmpE7DEB6969AC5980BEB6A33D8187E1448" />
+                <ComponentRef Id="cmpEA1A21D6BE03C94A343B725A6B0FDB63" />
+                <ComponentRef Id="cmpED6883ADADF68C255773041F552A8CEF" />
+                <ComponentRef Id="cmpF15D9883BFB94202C6D2E74FDD296A64" />
+                <ComponentRef Id="cmpF2E2EDA5C85E447A9801571BD26028B8" />
+                <ComponentRef Id="cmpF306DAFB123AFAFBDA4729640762EC3F" />
+                <ComponentRef Id="cmpF36C80AE2A7361C4B0EBDC5CA2D6D4EA" />
+                <ComponentRef Id="cmpF5CB4AF6D8FE61404A008A280C1F54C8" />
+                <ComponentRef Id="cmpF798F7BCE5847A837552D1DE69E6C9E6" />
+                <ComponentRef Id="cmpF85AAD86BD1248FEEBA6609EA6FF4F1C" />
+                <ComponentRef Id="cmpF8C0114250877B1DFCDF272B36662D21" />
+                <ComponentRef Id="cmpF8E09DB2D7846ABB4F7F248B490D1D51" />
+                <ComponentRef Id="cmpF9CF1198241FFEF57428A942D67B393A" />
+                <ComponentRef Id="cmpFB2679ECE21D99B6B20475FB3CEFAE89" />
+                <ComponentRef Id="cmpFB8DE7FCB85DD7B7198A5C46D567A128" />
+                <ComponentRef Id="cmpFBB3D6198EF54F673EC0B390194830EB" />
+                <ComponentRef Id="cmpFCB852E3A475C33EB3AEB973C62F7C26" />
+                <ComponentRef Id="cmpFCF9917746A4E97A5AA27D2B7E86CD73" />
+                <ComponentRef Id="cmpFD0EC2AA7014EE06BA72A63E82416291" />
+                <ComponentRef Id="cmpFE529A2D23CA0777BAAB26380DFF6935" />
+                <ComponentRef Id="cmpFEE09D80334332B921997C4B04A169D6" />
+                <MergeRef Id="VCCRT" />
+                <ComponentRef Id="CondorRegNEnv" />
+                <ComponentRef Id="CondorKBDDReg" />
+                <ComponentRef Id="CreatingSpoolDir" />
+                <ComponentRef Id="CreatingExecuteDir" />
+                <ComponentRef Id="CreatingLogDir" />
+            </Feature>
+        </Feature>
+        <UI Id="MyWixUI_FeatureTree">
+            <UIRef Id="WixUI_InstallDir" />
+            <DialogRef Id="CondorPoolCfgDlg" />
+            <DialogRef Id="CondorExecCfgDlg" />
+            <DialogRef Id="CondorDomainCfgDlg" />
+            <DialogRef Id="CondorEmailCfgDlg" />
+            <DialogRef Id="CondorJavaCfgDlg" />
+            <DialogRef Id="CondorPermCfgDlg" />
+            <DialogRef Id="CondorVMCfgDlg" />
+            <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="CondorPoolCfgDlg" Order="2">LicenseAccepted = "1" And Not UPGRADEFOUND</Publish>
+            <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="CondorVMCfgDlg">1</Publish>
+            <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="2">1</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg">Not UPGRADEFOUND</Publish>
+            <Publish Dialog="LicenseAgreementDlg" Event="NewDialog" Value="VerifyReadyDlg" Control="Next">LicenseAccepted = "1" And UPGRADEFOUND And Not SEVENFIVEFIVEFOUND</Publish>
+            <Publish Dialog="LicenseAgreementDlg" Event="NewDialog" Value="CondorUpHostDlg" Control="Next">LicenseAccepted = "1" And UPGRADEFOUND And SEVENFIVEFIVEFOUND</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">UPGRADEFOUND And Not SEVENFIVEFIVEFOUND</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CondorVMCfgDlg">UPGRADEFOUND And SEVENFIVEFIVEFOUND</Publish>
+        </UI>
+        <UIRef Id="WixUI_ErrorProgressText" />
+        <WixVariable Id="WixUIBannerBmp" Overridable="yes" Value="Bitmaps/bannrbmp.bmp" />
+        <WixVariable Id="WixUIDialogBmp" Overridable="yes" Value="Bitmaps/dlgbmp.bmp" />
+    </Product>
+    <Fragment>
+        <DirectoryRef Id="TARGETDIR">
+            <Directory Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC" Name="bin" />
+            <Directory Id="dir68F1EFAA7C46594FB79D1195A3DF8B79" Name="etc" />
+            <Directory Id="dirE943AC7232806A4D114801E13C414E20" Name="include" />
+            <Directory Id="dirAAA193B5A5015AADBAB7F9C7DDB27425" Name="lib" />
+            <Directory Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50" Name="man" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp000B929D5CCA38014BBB189A8D460AF8" Guid="75862578-3BDE-4F08-873B-2C4618276E89">
+                <File Id="filA9AE36B743A69B0B7E2D598661AC4E3A" KeyPath="yes" Source="$(var.Source)\bin\condor_userprio.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp0106807038EDF7D05591D6B691C164F4" Guid="4281BC7D-2FD1-43E6-849B-BE5360EE65C5">
+                <File Id="fil63AC5FB3FDA95E16C3C7854C1B43C1F1" KeyPath="yes" Source="$(var.Source)\man\bosco_stop.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir5FB01AF056D922CAAA5C945AC9F80224">
+            <Component Id="cmp02E4643368E9094E4F983CB27040FBFF" Guid="44AE2DFB-4DA3-4C33-94D0-0BBF50F13571">
+                <File Id="fil2156A6BB4A034A1E36F9777373F08975" KeyPath="yes" Source="$(var.Source)\lib\python\classad.lib" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp0311E910A10A2693A2358BA92799B98B" Guid="7D629E6A-A773-485D-B7DE-C5E56B9A23B1">
+                <File Id="fil2DD13E25DE63AAEBF95231B08F620E33" KeyPath="yes" Source="$(var.Source)\man\condor_history.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Component Id="cmp033D0773E2C87F1AD0ABB69285ABCBA4" Guid="EEE20788-2B23-4B25-92F4-4C8B2AF8AE7D">
+                <File Id="fil0DB41BC9E48E7600628E00D8B1053BC7" KeyPath="yes" Source="$(var.Source)\etc\condor_config.local.credd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp034D9789D49264E6C7EAF1C4FC024E84" Guid="97717D0B-6942-45E6-A709-2E3F27380603">
+                <File Id="fil5731EDED02CC06BFBB1FE790AE2CE119" KeyPath="yes" Source="$(var.Source)\man\condor_check_userlogs.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp04ACC208F5B1205FFFEBD2D88430345E" Guid="486E9FEE-39C3-41D6-9EE8-D19A61B66F6D">
+                <File Id="fil12EEE15A5A5703B497CF2BB96C562192" KeyPath="yes" Source="$(var.Source)\man\condor_reschedule.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp07D396990B1315B990654E303B80CFA0" Guid="5860927F-7F21-48D7-A656-FE1C1596AB4F">
+                <File Id="filAA177FF287FE7F191DB3513C26B65AA1" KeyPath="yes" Source="$(var.Source)\man\condor_cod.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp08F21681034CAFDB7D11F341EDBF9A3B" Guid="FB185E9F-11BE-4F8C-8C25-84077E7F468E">
+                <File Id="fil70CC23F625D5C9D77ADA3CA921D43C74" KeyPath="yes" Source="$(var.Source)\bin\condor_transferer.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmp0CCBA76B7B3D0663247ABABC82441030" Guid="9D0BC47A-E66D-4883-AE52-1CDF9AD59B97">
+                <File Id="fil176CDD2F451A9C7684724148B4E67120" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorPermCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp0CDF795198704A944864159F808C966C" Guid="3745AD0B-A59D-4EFD-85AF-7EAA08DE7D24">
+                <File Id="filA7D8B37CAAA4E2EFA7EC26F4D6A7F8A7" KeyPath="yes" Source="$(var.Source)\man\condor_set_shutdown.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp0E613D0628BBB5654677EFDD4C3362A7" Guid="EE43C86D-9D5A-4951-8513-6B1A25D7429F">
+                <File Id="fil3B2FDFE5A3699F63D7558B279E927560" KeyPath="yes" Source="$(var.Source)\bin\condor_check_userlogs.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp0E86E61C7A05353B9692B9CECF327E98" Guid="33587D98-4BB5-42A1-A2A9-E3060FF46CC7">
+                <File Id="filD4B0967518B43213B0649B6D5E9445BB" KeyPath="yes" Source="$(var.Source)\bin\condor_vacate.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp0F0A785DE1EF3DA693546BF715C6105F" Guid="85C60A06-33B2-4781-85B1-95DB4CE8AB0B">
+                <File Id="fil80EF7845488D3D1A52942C9CCFE1C966" KeyPath="yes" Source="$(var.Source)\man\bosco_uninstall.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp0FEEA4BD0563BC6D664CEA48A2833A09" Guid="4922EF77-ECA0-4B30-9176-93A5300BAC16">
+                <File Id="fil3198037926D2CC340204484BF2735EBA" KeyPath="yes" Source="$(var.Source)\man\condor_dagman.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmp1051217F6DC73F3500C6320A1D6D3012" Guid="650BF93B-C5E8-40D7-8EF5-5AF54FBD098D">
+                <File Id="fil1140566E8093D5F43E6629A3D9F638E1" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorDomainCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp136067798E67C9C688EF773C04C28584" Guid="682913AE-D166-4133-B1D4-0EB53B1564B6">
+                <File Id="fil3EBF93FB7655B5F853F5494EDCFA5014" KeyPath="yes" Source="$(var.Source)\man\condor_router_q.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp13E938DF34433EC7CC8BAA3CAB8E6FE0" Guid="DAE1A158-7C40-41BD-8509-1F30A04F24D5">
+                <File Id="filE2EF82F5AD0F3235013761036839AF10" KeyPath="yes" Source="$(var.Source)\man\condor_reconfig.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp14FAF3F15EF5180FFB438D673F98D7A9" Guid="D1248358-EC2D-4604-A734-91D2CC8E44A3">
+                <File Id="fil1B33FA46F02E483E5D81F54F7B0BBA02" KeyPath="yes" Source="$(var.Source)\man\condor_rmdir.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp154A096C77BD8BA046E08A7BAC1DEBF5" Guid="14662293-FFC6-46ED-B4AB-FBC0CAEEEA50">
+                <File Id="filF480864F565CE5316EEF55467F005B45" KeyPath="yes" Source="$(var.Source)\man\condor_urlfetch.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp1756811AF44EBBAABF4A07AF108AF26C" Guid="6826C99B-5A44-4EB8-A0D6-5C7692CD91D5">
+                <File Id="fil98D9D9082DCB158AE28B94D308E29977" KeyPath="yes" Source="$(var.Source)\include\file_lock.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp1AB6CD0D99AE8FD39BA76789141A71A2" Guid="98810730-A038-425B-A17C-430E89440DEA">
+                <File Id="filA6C0DDC2F7D22FBF8FC390DBFD1F8DCC" KeyPath="yes" Source="$(var.Source)\include\condor_event.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp1B0067D4866C4767F728D4D22F61858A" Guid="E1FE2DEB-5C72-419E-A052-FDC966A43284">
+                <File Id="fil357CA96C507D14F145FB74B5053645FD" KeyPath="yes" Source="$(var.Source)\bin\CondorJavaInfo.class" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp1CAA4FCCA05E18D4DD43D1DAE9D4E310" Guid="4B43254C-0170-49BE-9C20-157299F14A64">
+                <File Id="fil0AE2AE0911C6E82EEF77A0BA44B286CE" KeyPath="yes" Source="$(var.Source)\man\condor_gather_info.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp1CB8539DF110C2CBE3FF232D74A455D1" Guid="E88D9E60-474B-4C7E-B3AE-7889FF882D06">
+                <File Id="filBF5E95C512387860548AC6FA81501A4C" KeyPath="yes" Source="$(var.Source)\bin\condor_dagman.exe">
+                    <FirewallException Id="FWX12" Name="condor_dagman.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp1D4F98A108B5212EF8EAFA60444E2813" Guid="72DA6DF0-8052-4FAC-9355-636DAD79369A">
+                <File Id="fil5DAAAA69A9CCFDAF1F8D65B508317F50" KeyPath="yes" Source="$(var.Source)\bin\condor_set_shutdown.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp2127CAAAAE00A5D437834277C607AEB2" Guid="33D7FC1E-7E36-45D4-B740-0CEC6124AB26">
+                <File Id="fil7A143033B7F846634F93CA1E62B871A6" KeyPath="yes" Source="$(var.Source)\man\condor_preen.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp21D7A46DB4AA381D431453802259851C" Guid="B2B3A694-BB2B-40E9-8484-8D47D703B638">
+                <File Id="filC0DA75348A5D6BCC07588563F6E5DD3F" KeyPath="yes" Source="$(var.Source)\bin\condor_startd.exe">
+                    <FirewallException Id="FWX5" Name="condor_startd.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp2243E26D2232243ADCB3E90E11B856FC" Guid="51B8AC5C-3575-4768-ADEC-C47704D16038">
+                <File Id="fil551C56B1B3D07C48B4B4631B2086AA4C" KeyPath="yes" Source="$(var.Source)\bin\test_user_mapping.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Component Id="cmp23DA8AD33BB85452EF63D4AA75266F0B" Guid="7DB2DA4D-33AD-46AF-8D81-BBFCE3D4638A">
+                <File Id="filC02D1324DEE9A8F2F1A01E2F6A045AF9" KeyPath="yes" Source="$(var.Source)\etc\condor_config.local.central.manager" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp240AB06B15EF5DC7FC9C14559EC4834D" Guid="210B29FB-3BF6-4091-85B4-CDF4A4E86026">
+                <File Id="filD1018C3C91883C2ADF7A16EAA1E2B54A" KeyPath="yes" Source="$(var.Source)\bin\condor_had.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp24A2520100C821BB9F2378982DE18672" Guid="F186FAFA-ADB2-4ECA-949E-565006CB26C4">
+                <File Id="fil2271DFEDE968E2A3C5B8CAF091739B7A" KeyPath="yes" Source="$(var.Source)\bin\krb5_64.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir5FB01AF056D922CAAA5C945AC9F80224">
+            <Component Id="cmp25141ACF6F99B5891BA8BC1DFF4EA7E0" Guid="31140113-6567-4290-9A3C-32702A8DEDC2">
+                <File Id="fil204BB93D94E3061BCC06F2E8438A9EAD" KeyPath="yes" Source="$(var.Source)\lib\python\classad.pyd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp25B82623796E2F63C793AB87EB901C0C" Guid="5786D75B-EF51-4C74-B439-2AE0972BBD86">
+                <File Id="filFD3E0A00874BD9481C0750BE27CB4678" KeyPath="yes" Source="$(var.Source)\man\condor_who.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAC4CDDE2AD2AD42BFF96FF3852B40B3A">
+            <Component Id="cmp26867891D235C4A16F01ECA5F19AA89D" Guid="4675A136-5C36-48A0-9267-2E6E1BC4B93F">
+                <File Id="filF8DE7451C45FEC9438FDF0C59DE431BB" KeyPath="yes" Source="$(var.Source)\etc\WiX\do_wix.bat" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp26A41D912BADDC75679DE06783178F94" Guid="06519869-DD1A-4F57-B294-D3842FE0A9DC">
+                <File Id="filE1C224C2BDA2C51C65B33A1A6B3836AE" KeyPath="yes" Source="$(var.Source)\bin\condor_power.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp2715A781B1FE50FBB4056FD27114CF08" Guid="BE4F4808-E6CA-408F-B573-E3548537A10F">
+                <File Id="fil8C9E0673CE0082D9BE572E2AB2541F5D" KeyPath="yes" Source="$(var.Source)\man\procd_ctl.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp299E55611BCEB75DD7BEB2FDBDA6E1E6" Guid="06004FF6-EBF1-4362-A9EF-4891D62B601B">
+                <File Id="fil2C3B68D4CA05E515BBE252F0DEA119D6" KeyPath="yes" Source="$(var.Source)\man\condor_tail.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp2C00A9A1E9760C77B1D9694223E4697F" Guid="A55C9A54-2A5D-4DB2-958F-5C29DF4970D8">
+                <File Id="filE2FF1F984FC2188176B64BB344C38BB0" KeyPath="yes" Source="$(var.Source)\bin\condor_softkill.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp2C06437A129F0556C2A01735397C442B" Guid="BE06B004-E380-4150-939F-DC7C656E7657">
+                <File Id="fil631F9F116FF610D15330CF1F292CD20A" KeyPath="yes" Source="$(var.Source)\man\condor_install.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp307FA11D2FC9339E6950618BF2310868" Guid="52186948-1B95-4CC0-8797-639F2B06B514">
+                <File Id="filA11EF9408B0326ADC2D0D6D6FDE02712" KeyPath="yes" Source="$(var.Source)\bin\condor_drain.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp30BB4B01596415A7ABDDA0CC49AF4B89" Guid="EFB80E24-DB76-4BC2-8BE0-292174E59407">
+                <File Id="filF3CA6AF801D089D79EBFBE473C42A5FE" KeyPath="yes" Source="$(var.Source)\bin\condor_wait.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp30F97C84658360C45EF3F831A9FD9B56" Guid="1968A7C7-08BB-4504-87E4-CBAA298DAE99">
+                <File Id="fil231FDC4D65855CFB68F1CEDC49AE975A" KeyPath="yes" Source="$(var.Source)\bin\condor_starter.exe">
+                    <FirewallException Id="FWX9" Name="condor_starter.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp314539DAE31CC274F5B3AFFC9488BA4D" Guid="54F7A850-24FB-4510-AEB5-28983B0C08D9">
+                <File Id="fil082042C0AF1230B45E258E13373D8AB9" KeyPath="yes" Source="$(var.Source)\bin\condor_credd.exe">
+                    <FirewallException Id="FWX7" Name="condor_credd.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp32095E6FD01B0AC759F21CF518118053" Guid="4ACE890F-E9A3-4739-A7C5-B9F8EEA2002F">
+                <File Id="filE73A8A1038F08BFC6C9BB349902D5766" KeyPath="yes" Source="$(var.Source)\man\condor_submit.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp32A917CFAEA8C7B1E66DAC5D04C862B9" Guid="C2D6D684-C15B-4DCB-B726-5669DBB30AA9">
+                <File Id="filBFAFC00E61B7752329C317243364528B" KeyPath="yes" Source="$(var.Source)\bin\condor_c-gahp.exe">
+                    <FirewallException Id="FWX13" Name="condor_c-gahp.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp32AA8DD2E803ED8A04568909FAF33E0A" Guid="1DB2E018-A63C-46D3-8F3A-8E4955BE3B28">
+                <File Id="filFC36BA106C0D494DBF76058D6C6BDDD5" KeyPath="yes" Source="$(var.Source)\bin\condor_testingd.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp32D4C2B4BF8100D172B213DC1DFA1673" Guid="2565AFC9-CA4F-4B2C-83CE-1B53D847B27A">
+                <File Id="filD691BA6552464EB4BAB4BBADEC48BE26" KeyPath="yes" Source="$(var.Source)\bin\condor_reschedule.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp337AE4C111D869A3AED7A003C50A3DFD" Guid="4E69F6B2-56D6-480F-839D-6960A5ED363D">
+                <File Id="fil5861375558D17C7E002C243564D2B564" KeyPath="yes" Source="$(var.Source)\bin\condor_schedd.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp35122720286AE571251A7B27410FE331" Guid="8FBDB739-64BC-4589-A70C-2A77CFDA88D8">
+                <File Id="fil7CDCB58B6306E6B41F4953AD62D827F0" KeyPath="yes" Source="$(var.Source)\man\condor_updates_stats.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp351950C19821FBA43C63248FC04A67B7" Guid="3CDB8CF5-A2C7-428C-8D57-C501137AFBA2">
+                <File Id="fil2BBD99FF4570C74BF92AA644A4DB54AC" KeyPath="yes" Source="$(var.Source)\man\condor_submit_dag.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir5FB01AF056D922CAAA5C945AC9F80224">
+            <Component Id="cmp35F7CD153EBF5222AC3207BBD1680D04" Guid="50838089-6A25-4A6D-9108-C9E4EE5B3708">
+                <File Id="fil6F8CFDF5766E8880F3E5400ED7449EEB" KeyPath="yes" Source="$(var.Source)\lib\python\classad.cp36-win_amd64.pyd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp37A3F0D05056BF0AA5842C2AA082534D" Guid="8D4EC3A5-4A0C-4262-8F49-034C561F82D0">
+                <File Id="filEED2B303347D287ADC5F7155AD4C65B9" KeyPath="yes" Source="$(var.Source)\bin\condor_kbdd.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp38C6C776A515F3B3A3C6169BFF434D73" Guid="7ED556D5-CA42-4F15-9C7C-C9497F9838C5">
+                <File Id="fil78F13294C83A0A2E52E4EFD3603C231F" KeyPath="yes" Source="$(var.Source)\man\condor_now.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp396DCE3C65B545B1DBC50B1CEBEFBA21" Guid="9C029E56-63F0-416E-99E3-9137DCA44460">
+                <File Id="filD4B64E1F1C96E67F972126E811BB9754" KeyPath="yes" Source="$(var.Source)\bin\condor_procd.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Component Id="cmp3C8252C89E026C1871E5F78DB190AE2B" Guid="76ACA1C7-30F6-47B4-A385-B8BEE59B6525">
+                <File Id="fil86ACB673E411984AAE59EFB40AE11F3C" KeyPath="yes" Source="$(var.Source)\etc\condor_config.local.generic" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp3CD3FF6E06A7621630C03E5939C0BE02" Guid="9387760F-9EE8-4922-8591-ECC98D5D26A4">
+                <File Id="filEA0327EF69655468B223D958C4A188D0" KeyPath="yes" Source="$(var.Source)\bin\condor_dagman.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp3D125D67EAB1E3C99281E6A89991C03C" Guid="E4CADF2E-24CF-48EF-8CB2-E4BDDDC5EB48">
+                <File Id="fil2D18D8B06C073128110D06E112AE8731" KeyPath="yes" Source="$(var.Source)\man\bosco_start.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp3D3171DC66E6FEC7750A6EB2F72CA5DD" Guid="3DA0A999-A11F-40A8-8FDB-690AF74A01F7">
+                <File Id="filC5DB6A236E2FA02F423BAE68EC9CC818" KeyPath="yes" Source="$(var.Source)\bin\condor_tail.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp3E4D20936157D842B3398D9563D1AB70" Guid="63EFC9AC-10B7-46B3-B26A-0F068B876F6E">
+                <File Id="fil4C75296A26D9D21BECCB4319BFEB84D7" KeyPath="yes" Source="$(var.Source)\bin\condor_rmdir.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp3F24245C77F6A070154EA8A7EBA5B982" Guid="D0781342-50D8-41B4-B300-34B6BB3FCFB1">
+                <File Id="filB29CA88A2BA8F50E79F1EF1775CF4A76" KeyPath="yes" Source="$(var.Source)\man\condor_wait.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp401724DDDB1BD7E1875E5F79EDB2B233" Guid="80298255-B8CD-484C-B5BA-20224F8962AF">
+                <File Id="filBCE797A1E0D4B1A814C3A274F642CC52" KeyPath="yes" Source="$(var.Source)\bin\pyclassad2.7_8_8_12.lib" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp4051135063E0379F3545490F91AD3866" Guid="9E58949E-6C99-4B1A-9D92-58CC0652EF74">
+                <File Id="fil0E152AECDB49ACA8B7EE8B2E7C2F7182" KeyPath="yes" Source="$(var.Source)\include\compat_classad.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp41F7B57AE2D28FE4C07A6810D3AE6D07" Guid="93D480AF-97A1-400E-9176-BED9A1DC2AAF">
+                <File Id="fil4D63BA77B5F60CDC941EC8A99810C97E" KeyPath="yes" Source="$(var.Source)\bin\condor_config_val.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp4294BF39E67ECE72BBCCB3EA4503E655" Guid="AD733D56-B42E-4C21-AD88-E1B2D736B6F1">
+                <File Id="filFFD44290FBF25010279FF47387AC1A77" KeyPath="yes" Source="$(var.Source)\bin\condor_shared_port.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp437AF01A838A460C439D6CF4B6DB2452" Guid="FA8FA95B-4226-4D38-A6FB-0D305438CA23">
+                <File Id="fil2F76A09DB7AB644F1437C9CBB79175F7" KeyPath="yes" Source="$(var.Source)\bin\condor_release.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp44E5FB5F231E495D660A1DF05295A5CC" Guid="D1CD16A5-74A6-4FEA-B41B-8532D7DFA9A1">
+                <File Id="fil32E0C84DA2AA925F2E77EDDC23AB3B50" KeyPath="yes" Source="$(var.Source)\bin\ssleay32.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp46B6868B449AB5B8E4ABA5658D717C7C" Guid="19EE5466-E8B6-4134-9A01-92B612E012D8">
+                <File Id="filE5C74B4BA125C39676675609EA7263C8" KeyPath="yes" Source="$(var.Source)\man\condor_vacate_job.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp4B5CF9CE7D4351669B207AE1F4878A4F" Guid="1E78119E-3D87-406B-A2AB-BF6153B57256">
+                <File Id="fil37FD01DDAAD8712E244EDBAB69A5521C" KeyPath="yes" Source="$(var.Source)\bin\condor_transfer_data.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp4BE8E320AA9D9CC6390AE3638F2411D0" Guid="41DFBD39-2EFF-4603-96F6-A91B0FA65CC4">
+                <File Id="filE79E392C437841C5592D444A00806C65" KeyPath="yes" Source="$(var.Source)\bin\condor_who.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmp4D7244FC42A2192733E1B57ADDB4C644" Guid="584C06F6-48A3-49E2-9217-FF46D2863D77">
+                <File Id="fil74C262A7561F3AC35869043E04A8CDBD" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\condor.xsl" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp4DF00E84E9AFEE1A739CD716AAA5F2DE" Guid="4249CC12-1CF0-445C-BC41-B46C8A381C69">
+                <File Id="filF824CB6A231D6F7E49D6A8A8C858DC4B" KeyPath="yes" Source="$(var.Source)\include\MyString.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp4E3ABB62C733614AF89A8C24CF6C2B31" Guid="50B385D7-552C-4A4C-89FE-B05684F747FC">
+                <File Id="filFFA61A93EB86FC81547030A904E969B8" KeyPath="yes" Source="$(var.Source)\man\condor_q.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp4E9910729AEA4D8738C4CEFC9DA8933B" Guid="6406410F-A234-488A-A40E-3A812A8CA6D5">
+                <File Id="fil1407ED47425F118B020932248BB1F34F" KeyPath="yes" Source="$(var.Source)\man\condor_transfer_data.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp4F6B7BAB13118E807BCF9A11EF48630D" Guid="8DB35BF1-E72B-4885-BD3A-E7D434DF8D50">
+                <File Id="filF8D3D19D5E867CF954848202B092305C" KeyPath="yes" Source="$(var.Source)\bin\condor_top" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp5175465A611D722BC34CB486909F4FCD" Guid="4F8C3426-915E-4D1C-912C-A82652A1FD79">
+                <File Id="filC8C7696BF93E39EB5A632E4F84BD016A" KeyPath="yes" Source="$(var.Source)\man\condor_job_router_info.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp5195C6CDDD180785B286ACF1E82B74AE" Guid="0ACFB248-4E0D-4C86-9389-CCC2CCE4D546">
+                <File Id="filD6CFFA309252C09FF9272C2FDD00B996" KeyPath="yes" Source="$(var.Source)\bin\condor_power_state.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp52C0DF106767FFEE1ECCAEE6BCA7194F" Guid="A7E25A86-7F63-4368-9009-3D99CFEE73A6">
+                <File Id="fil9DBECE6CC4E73712598591B61BD351CA" KeyPath="yes" Source="$(var.Source)\bin\pyclassad3.6_8_8_12.lib" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirDD004FBEFF4275BECF599B41EEB3329B">
+            <Component Id="cmp5302F846570BA71572188BABAEE0DFB9" Guid="E4925463-A9F4-4C21-BBBF-FAA7F760123E">
+                <File Id="filAE42EC970F3E1C6B9252653E9D1064C9" KeyPath="yes" Source="$(var.Source)\etc\WiX\Bitmaps\bannrbmp.bmp" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp53CDA21012411ADB13DD621F81291C5B" Guid="7DB76E15-68FC-4AAF-8BC4-A09951B8A0B1">
+                <File Id="fil8831E77B13AD1EE22A0EBB200DD963E0" KeyPath="yes" Source="$(var.Source)\bin\condor_gridmanager.exe">
+                    <FirewallException Id="FWX11" Name="condor_gridmanager.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp55B84B6B0C886A5689D1E3912CFF044A" Guid="C059EF1E-1161-48A7-B667-FC26F819E1DC">
+                <File Id="fil49E6FC4885EA26FA76E452C1DA5D020C" KeyPath="yes" Source="$(var.Source)\man\condor_qsub.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp55FAE3BAD1983E3C6FA282271E0BC995" Guid="8A37B498-4A20-4D85-B37F-C94573965B11">
+                <File Id="fil13152DAD76D6870278F8E6F570C6A305" KeyPath="yes" Source="$(var.Source)\man\condor_procd.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmp55FF823DE19DFA1A7FE43FE8B81DF186" Guid="6248F3FF-B33C-4321-9830-EEBDFE498FB1">
+                <File Id="fil6870B96CDBFA79BD190A9B58A39FD3B2" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorJavaCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp568C19BFABA3775C8CDFE2A9D20AC08A" Guid="22822C29-C50C-4EFC-865C-E6F324EB1DFF">
+                <File Id="fil12B82CBDD132A25C403E24F624DE3A57" KeyPath="yes" Source="$(var.Source)\man\bosco_install.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp569334F845447E0C6422B9634DB2C109" Guid="C022766A-5072-44B5-A074-8C99B7AB02BB">
+                <File Id="filF92FC9B9D184E016D50687EF4AFC38B4" KeyPath="yes" Source="$(var.Source)\man\condor_update_machine_ad.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp575BA0EFAD6A70DABF6689B4C8BD5E90" Guid="38367204-6122-4E15-9D27-A8532254B70A">
+                <File Id="fil4D6DC616B886EB130B9C15F4C7E9E5A0" KeyPath="yes" Source="$(var.Source)\bin\CondorTest.pm" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp5962A9D959D79B9E12046750D02FD980" Guid="37314D63-3600-4B53-8D4E-68EB31A36D36">
+                <File Id="fil56F31A5747D20DB967399CD865881B4F" KeyPath="yes" Source="$(var.Source)\man\condor_convert_history.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp59B8C168A544C8F9A0FDFA32DF8AF3DA" Guid="10B5F870-FF44-4EF9-A2E0-EDA35C91790F">
+                <File Id="fil8B3E6748F4D72205BCFACEFB619FA546" KeyPath="yes" Source="$(var.Source)\man\condor_master.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp5A06ACC0C77D7A3AD91172A8E7BDAC59" Guid="D1F78069-3E80-40C8-997D-430AB406D783">
+                <File Id="filA3E0156765844762955120DFDEFFA866" KeyPath="yes" Source="$(var.Source)\bin\condor_kflops.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp5C2095B97991587DA895365A26530268" Guid="7F1D76BA-EC61-49EC-956C-EEDF4861D286">
+                <File Id="fil2046A288846D8B3955511128B45871BF" KeyPath="yes" Source="$(var.Source)\bin\condor_continue.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmp5DDD071FC7B1FFECBAEE58C92D21A500" Guid="68ACA731-5B12-457E-A4EE-E27B279CF6FF">
+                <File Id="filC2BD8FA2E69CDCFB3E8DC30E5603A2D0" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorEmailCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp5E289C755023897DE5B1D8077919FD4D" Guid="0BFB8606-45AE-466D-9644-29B531BF720B">
+                <File Id="fil06B47016FAD30CAC844C3C1BE090AF69" KeyPath="yes" Source="$(var.Source)\man\condor_version.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp5F33E3719332ACDFB6837E44B62C4434" Guid="67AF9DB7-B208-4B42-9F64-7326BFF652CB">
+                <File Id="fil005E4074CB593E1989972FD86F32CEB1" KeyPath="yes" Source="$(var.Source)\bin\condor_chirp.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp6084DFFA7DF2BF8276B3C93D946A363B" Guid="F05F58B5-2E9F-463B-8168-D67DA67B8AB0">
+                <File Id="filDA4B79645FDBAEBD0F8FE5EADB9689A9" KeyPath="yes" Source="$(var.Source)\bin\condor_update_machine_ad.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp608955D0B29184385B4E8EAAF651B2A1" Guid="E8709FB0-D3D4-47F2-8035-E10194E2FA6C">
+                <File Id="fil1D7A19804988CEB09513AB180C979B78" KeyPath="yes" Source="$(var.Source)\bin\classad_python_user.cp36-win_amd64.pyd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp60D3B9926DAFB0833A6385A7529672FB" Guid="14764AE3-1889-43EB-A5B0-8E9BE07E3213">
+                <File Id="fil4CB4735DF18928F09169AB8CE6E17A6E" KeyPath="yes" Source="$(var.Source)\bin\condor_kbdd.exe">
+                    <FirewallException Id="FWX6" Name="condor_kbdd.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp6102CCABC3E490B0289358D3718FC917" Guid="CFB507CF-D8ED-4236-8A66-FF2B148F90F4">
+                <File Id="filD376CF025788A0B642329BDB75EC310F" KeyPath="yes" Source="$(var.Source)\bin\condor_cod_request.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp6106B5E1037EE4B34945C2448BF44C79" Guid="B62CB1EB-30AD-4D6E-9ADE-28F17AD96D2F">
+                <File Id="fil83D01715C68340DE19802F6368DCB84F" KeyPath="yes" Source="$(var.Source)\bin\condor_job_router_info.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp61B6EE6FE1103AFF9643BDA853EA26BE" Guid="588A120B-1BD3-4B41-B3F7-7F2012D05979">
+                <File Id="fil1E1063943918CB7F7C1555B29E00959F" KeyPath="yes" Source="$(var.Source)\bin\curl_plugin.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp625109654BC98999738D6CA46CA7D0F5" Guid="237E75DE-8A7D-41B0-B665-C38F30A83994">
+                <File Id="fil6301C70D9BCA9DDF8E7C9BF3C26F33E7" KeyPath="yes" Source="$(var.Source)\bin\condor_set_acls.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp629FDCB92E0BACA0DB77F580C6903F21" Guid="E50FFAA4-B06A-412E-9BCD-DFE32F5DF8B7">
+                <File Id="filE2615BF37B2C04EFBC4950543DFEF89A" KeyPath="yes" Source="$(var.Source)\bin\k5sprt64.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp6303418688F0AEE3B4F7DB4D8588A7A5" Guid="CCBAD389-5463-4622-8021-D7C145A19016">
+                <File Id="filAB2505072201F67B07ED7A0A4325B7B4" KeyPath="yes" Source="$(var.Source)\man\bosco_cluster.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp63A83A7FE9DF44994DA21EC9FD8165D9" Guid="1F74F02E-93B2-43DE-BE4B-54C37EF5DF3A">
+                <File Id="fil1348CE5B7B4CAFA11EA7DC51F903A31F" KeyPath="yes" Source="$(var.Source)\bin\condor_prio.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp65E9F429A78395A5018B035901735134" Guid="4FB7AE84-07EA-426B-8033-0ADB3E0CC0CC">
+                <File Id="fil62C9306A2AEE4F3F92DD22EB2CAA7E06" KeyPath="yes" Source="$(var.Source)\man\condor_chirp.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp686CCB54CD75C01DF4313679DC6129F3" Guid="B8629426-1B8F-41D5-A197-734F44D552E4">
+                <File Id="fil15E5230271FD2577828AA9EC9F773C62" KeyPath="yes" Source="$(var.Source)\bin\Chirp.jar" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp6922A3A4535FE4A1CDD451D891A38C9A" Guid="C13DA845-C820-481B-AB6D-E6C4E51A574F">
+                <File Id="fil7D5512B94BD6023E0F1E9FF3D2704851" KeyPath="yes" Source="$(var.Source)\bin\condor_job_router.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp69CA436A7F38035F5C4D26503D46D018" Guid="2A0947D6-7FAF-4698-BF56-BBC3193ED83E">
+                <File Id="fil29DA32C6290FA798D1E182EDA774F283" KeyPath="yes" Source="$(var.Source)\bin\condor_setup.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp6A561F5152FB1622791FD7C90496DF9E" Guid="AE192B09-F973-468D-8890-9E40B9F31A03">
+                <File Id="filFA63E5461D9970FB6C702919C64D3CC8" KeyPath="yes" Source="$(var.Source)\include\compat_classad_util.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp6B00F9BEEE028E7D2A8C6BD785F1DD81" Guid="BECC1780-F454-4ED8-9A9E-F4BB98E723CC">
+                <File Id="fil93B4BD3E0CDC43ACBEC34EF986656AFA" KeyPath="yes" Source="$(var.Source)\bin\condor_vm_vmware.pl" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp6C92CFE7D774A4D56FF8BA8B6DFC5306" Guid="03A6CF6C-01EB-427E-82F6-2B9BE55A00C3">
+                <File Id="fil100C20B372EBBCBBED42EB675EF76C9A" KeyPath="yes" Source="$(var.Source)\man\condor_configure.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp6E64A3148F67B45383022490C65A50B6" Guid="A7336AC5-72CF-4BD6-89CB-128DC26BF353">
+                <File Id="fil54E0D8733D66F7B628637CC12A969B98" KeyPath="yes" Source="$(var.Source)\bin\condor_advertise.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp6F541967308FDE28DCAE939A53B54952" Guid="F5BF9DD5-452A-4ECD-A0FB-CFBAA30F1D52">
+                <File Id="fil2DA67AE08BF451CBDF6E1AD20EC23B94" KeyPath="yes" Source="$(var.Source)\man\condor_on.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp6FC394B15AAA3D585B7D709E6143D5B4" Guid="E613D4EB-5DEE-4E69-967D-033D03EFD2A4">
+                <File Id="fil64F38E049BCC588ABE98144839E35642" KeyPath="yes" Source="$(var.Source)\bin\condor_collector.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp70294F4E33A193057DEDEC95DF1EE8AD" Guid="C43ADD64-245E-4E46-A1B8-1995CC08A4D0">
+                <File Id="filE27D76019A0000AB0C260B042C6C3FB5" KeyPath="yes" Source="$(var.Source)\bin\condor_master.exe">
+                    <FirewallException Id="FWX1" Name="condor_master.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+                <ServiceInstall Id="CondorService" Description="condor" DisplayName="condor" ErrorControl="normal" Name="condor" Start="auto" Type="ownProcess" />
+                <ServiceControl Id="StartCondorService" Name="condor" Start="install" Wait="no" />
+                <ServiceControl Id="StopCondorService" Name="condor" Stop="both" Wait="yes" Remove="uninstall" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp72A9C20865C9E42A1575A47E71DBCFFA" Guid="8544DC73-9C30-41FC-BA56-82E564632D6E">
+                <File Id="filF4BB9FCAB5FA95028E15A28F955E1296" KeyPath="yes" Source="$(var.Source)\man\condor_release.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp72B37B28DC79D827E2B1F7B335E7A17B" Guid="3F8984C6-49B0-412E-8A8A-F48098E38A9A">
+                <File Id="fil208A93C9C6EF13CDE86D5F674FB8D682" KeyPath="yes" Source="$(var.Source)\man\condor_config_val.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp743B50C4F6AE2E669C903709D897A1A5" Guid="62473A04-8E10-4814-9741-17B02CEAB18A">
+                <File Id="filD120A8A5E8FC07CEDEC350034AF17EF2" KeyPath="yes" Source="$(var.Source)\bin\condor_store_cred.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp75DA0764AB90797B0E6EA9B14EA24FB4" Guid="91600734-B2EA-4A1D-9756-46561735E7FE">
+                <File Id="fil7C52C4DE14011001EDEA8E05B559649E" KeyPath="yes" Source="$(var.Source)\bin\boost_python36-vc141-mt-x32-1_68.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp75DEC7788ACE00EE67D36380E9E05D08" Guid="50D64498-6DC1-4982-98C1-C4A66773A527">
+                <File Id="filB6415043D5504FB088BD7EB83A761690" KeyPath="yes" Source="$(var.Source)\include\compat_classad_list.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp76A1D54CBE7CB71509C75BD3932E505E" Guid="5A279FAA-CC3C-481E-BC7E-2331A39BA228">
+                <File Id="fil9B1C981896B05E93F8E7FD8EFD276EE2" KeyPath="yes" Source="$(var.Source)\man\condor_off.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp7773632C251243D14A0BCFB656A62974" Guid="BCA71E16-1C21-472D-8DF3-2AB9B0850879">
+                <File Id="fil40B34B235A4877C8ED39801CEA907F1F" KeyPath="yes" Source="$(var.Source)\bin\condor_userlog.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp779C369BD3745AED6AC05337F11B312E" Guid="553266A6-A931-4CAB-B410-224D62BFAB10">
+                <File Id="fil480751F238E6B8EBED41402F4A9ADB08" KeyPath="yes" Source="$(var.Source)\man\condor_sos.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp7A0A418F594563C75741D08CB6827556" Guid="6C74943C-C550-49DD-B361-22A9AA3953F1">
+                <File Id="fil13D03D8C7F829793C4E9793CF3F0006E" KeyPath="yes" Source="$(var.Source)\bin\condor_squawk.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp7ADED3945D450E33EB536B4BEDB565CD" Guid="AE8EE5B5-3232-427B-95A9-03C5B63697D6">
+                <File Id="fil8870B0128DA008B5AF62D159A08E7334" KeyPath="yes" Source="$(var.Source)\bin\condor_restart.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp7C15E8CF8D9D986F487175C1D26D1155" Guid="88D71B00-2511-4A91-AA07-930BA3D3CDAB">
+                <File Id="fil4955AA6DADCC9C570D2F2090FC70527E" KeyPath="yes" Source="$(var.Source)\man\condor_gpu_discovery.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp7CADEB9DFE79337344C0C8848BD57888" Guid="94A245DB-FE57-4868-A31C-62A3AB3FB20A">
+                <File Id="fil3E00E15865E1D6B88B896DB578930AE6" KeyPath="yes" Source="$(var.Source)\bin\AzureGAHPServer.py" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp7D10945914FA552C951CBCF83B839025" Guid="E5387AF8-AB41-476F-8DB6-695003C49D61">
+                <File Id="filAAC386578F528E8B4AE5FFDAA7520828" KeyPath="yes" Source="$(var.Source)\bin\CondorPersonal.pm" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp7EF5E6AFABB2FD4E2F4F2F12E1476A12" Guid="30502604-9072-4793-ABBA-213B958763EB">
+                <File Id="fil1C84DBA46C376B38A4EEA7BC44DDE3D3" KeyPath="yes" Source="$(var.Source)\man\condor_qedit.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp80996C1C0FE0EA1B3F144C9157564CB9" Guid="51DF76DB-C82B-4DC7-91A0-60CB2B49E45A">
+                <File Id="filCF1AF4522808B85AB934D468CDF1714D" KeyPath="yes" Source="$(var.Source)\bin\condor_vacate_job.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp81E14563F901F7FB2F17851420E7876A" Guid="8014245E-0FD9-4BF3-99B5-3DE2E80F9071">
+                <File Id="filDBC08D7FAE929AF3380519C97CF1BEC1" KeyPath="yes" Source="$(var.Source)\include\condor_constants.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp81EE0D1B3EFC0DBB43F1FF0058930166" Guid="F5344281-F4F0-4215-A0EC-F3817F81253C">
+                <File Id="fil4F8F903DA12788A52CA84C1C8A4EFDF2" KeyPath="yes" Source="$(var.Source)\bin\boost_python27-vc141-mt-x64-1_68.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp82BCA43C9081472EE08A6BDBEA5D40E4" Guid="1D268EF7-EDB4-45B8-832C-FA86148EFBEB">
+                <File Id="fil5F66DC3C09C27A30E3D6AF78607EB800" KeyPath="yes" Source="$(var.Source)\bin\condor_now.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp830E545E84F0876C3FDE696930663963" Guid="0A352880-5B3B-4C01-BB09-53880E8EBDF7">
+                <File Id="filE699F4252D7059480D3E03DB30AF7D60" KeyPath="yes" Source="$(var.Source)\bin\condor_sinful.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp8392FAA11079B83166815B9A948A8461" Guid="506B574B-C677-4EF5-B2FE-3B56512F3157">
+                <File Id="fil7006553236B677C43ED9886CFC5251EB" KeyPath="yes" Source="$(var.Source)\man\bosco_findplatform.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp83F25892C7EC9798ABF1532DB82BB40B" Guid="36F0FC61-34F8-4602-9464-8A4659E7FC95">
+                <File Id="fil092EED37331DC0B37F3A49B3EE0EC63F" KeyPath="yes" Source="$(var.Source)\bin\condor_q.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAC4CDDE2AD2AD42BFF96FF3852B40B3A">
+            <Component Id="cmp8445FDF07649BF5D7A6D668D96DC2A30" Guid="9D78E585-A724-480C-8BB5-FB6CB44F443E">
+                <File Id="fil29F5E28A045857C0C6E3958B001E6F7A" KeyPath="yes" Source="$(var.Source)\etc\WiX\config.vbs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp86F3A91287387F1A29E7FE62B01A8297" Guid="FE7CE8C4-60B8-4661-A5D7-EEFC86F54307">
+                <File Id="filD01DAF5B782B698ED0B0C85DB847B780" KeyPath="yes" Source="$(var.Source)\bin\condor_negotiator.exe">
+                    <FirewallException Id="FWX4" Name="condor_negotiator.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp8732B97D7ACA30B3D222C1F81322FA13" Guid="0B6AF993-3B9E-4B87-BE3E-1071417EDCDC">
+                <File Id="fil4C077877B0E7828E579446A9A449FCF5" KeyPath="yes" Source="$(var.Source)\bin\procd_ctl.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp8741B9E98FB026A11A312DC4100FB003" Guid="25D909C0-0CA1-41AA-AB78-206AE5DD4405">
+                <File Id="filDD8E4C433BA9D6085117297394A6D613" KeyPath="yes" Source="$(var.Source)\man\gidd_alloc.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp8814B75F3FC83333CF268D5E2B4C5204" Guid="81E595CF-B950-4BBB-AD3D-60FAA5CDC039">
+                <File Id="fil91D1100B6C0001E0BC62A920AC0D1524" KeyPath="yes" Source="$(var.Source)\bin\classad_python_user.pyd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp88DA6E39A0546898C35D706814A8CA15" Guid="BF6570E4-65F7-44D8-9F0C-654D880C2C80">
+                <File Id="fil4FCB386CE7032503BD8ED4F2A9E2AB85" KeyPath="yes" Source="$(var.Source)\bin\condor_fetchlog.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp8A4583DE181CC57ECFE44B0AF42B4438" Guid="A88690D8-EE7B-491C-AF3C-ACD119515192">
+                <File Id="fil91527701C8DF886148C2B92917813EBE" KeyPath="yes" Source="$(var.Source)\bin\condor_gpu_discovery.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp8A6FEC7800525161B803A95A201692CE" Guid="6B692592-6C4D-4D4F-9AFD-D1DE9C139BE5">
+                <File Id="fil698B4BB93476D69CC4F4DA8E9F926200" KeyPath="yes" Source="$(var.Source)\bin\condor_gpu_utilization.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp8ABBF6E73A9AE78090559F1501E4E554" Guid="E1AE8EB8-4707-40F5-9F44-A37EBF8605CB">
+                <File Id="filF6355664FBA57DFED7C99C305CDC478F" KeyPath="yes" Source="$(var.Source)\bin\condor_transform_ads.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp8B458742889E4C29F96F594C252B4F86" Guid="12E783D5-177C-433F-A59A-BCFC161C5D11">
+                <File Id="fil7A1A6193462399DFB50A6DDD89A119B7" KeyPath="yes" Source="$(var.Source)\include\read_user_log.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp8C43036935B1A60DBA0608781B06CADD" Guid="C3C2A4ED-5353-4C3E-906C-84AC2A3DD605">
+                <File Id="filD84A74413C187E489B02AFB551D0D8C2" KeyPath="yes" Source="$(var.Source)\include\write_user_log.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Component Id="cmp8C5CF4D1E4E678F71965642A1E6264E9" Guid="C5DB9440-E544-4201-801B-544841C402FC">
+                <File Id="fil0C07851F8DEA37C8928ECBFC4F36B8B9" KeyPath="yes" Source="$(var.Source)\etc\condor_config.power" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp8DF9CE537A78A50AAB7EEB25AD9F0BDB" Guid="9A05279D-87D4-4FE7-83F6-434E22C111DF">
+                <File Id="filC11A11953DF3A54F7D311D85014EDEEF" KeyPath="yes" Source="$(var.Source)\bin\condor_submit_dag.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp900AC3E74213392CC780E884A80CE9E4" Guid="C12A172D-E4EC-48F4-AE31-81BD218324CA">
+                <File Id="filA4483FCC11986530BBD7DBC6CC73E13E" KeyPath="yes" Source="$(var.Source)\include\user_log.README" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp91D21A4DE311461F84C53A363629EB55" Guid="72F6A93E-70FB-45B8-8952-AA9CA827B2BE">
+                <File Id="fil46A7BC8416468A30FCBA863003D54068" KeyPath="yes" Source="$(var.Source)\bin\condor_startd.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp927103D9496B7EE841F27437CB9449A4" Guid="ED5B7E82-C8F8-4910-8626-DAC99B35B825">
+                <File Id="fil2BCFCC8868DC0CB3885796E62B0B4275" KeyPath="yes" Source="$(var.Source)\man\condor_router_rm.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9449BDC232102BFA0FC672F6E0BFC825" Guid="A129E014-374E-41C3-9335-A1865D8F2AFD">
+                <File Id="fil9214969AFECFC92D71402A0A574604FA" KeyPath="yes" Source="$(var.Source)\bin\boost_python36-vc141-mt-x64-1_68.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp95E9D9403E260FB08820A3B25217ABAF" Guid="ED052B7F-8588-446C-AF87-1EA11B8BC266">
+                <File Id="fil6843FD1D1CE93119C917109BED711E7F" KeyPath="yes" Source="$(var.Source)\bin\condor_rm.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp96FB285F40D7E23933E9C32277D7C873" Guid="FCF8CA3F-C016-47A7-9A1A-916DC8603E2A">
+                <File Id="fil9CCE90EF644AFDEE15D40AA5BE90A630" KeyPath="yes" Source="$(var.Source)\bin\condor_convert_history.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9787C5A5372F63165F0DA9442F1548B4" Guid="0BB77F5B-499B-419F-829E-9036393CE890">
+                <File Id="filC569AAC59D320F10DCD2EABD98654FBC" KeyPath="yes" Source="$(var.Source)\bin\condor_vm-gahp.exe">
+                    <FirewallException Id="FWX15" Name="condor_vm-gahp.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmp9831E2F600D85FE8CA04214596BF3748" Guid="6E7BC9C4-4B0C-49AF-824C-3D8A5A8EE860">
+                <File Id="filF02248FB4AADDD2B3FB20604ACAA2878" KeyPath="yes" Source="$(var.Source)\include\stl_string_utils.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp989A53ADED10D59D7D33DC85F3D8031B" Guid="7D1575B0-61D4-4997-961A-48063843015F">
+                <File Id="fil26B7966AC3CB280ACCC67B90E78E3473" KeyPath="yes" Source="$(var.Source)\bin\condor_off.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp992B8773051E77E6B6FC3C57C6A1A727" Guid="E8DA4325-B419-4B07-87E0-0019F6DC3A0D">
+                <File Id="filF653C24F72B25E72D5A2FCF95DF128E9" KeyPath="yes" Source="$(var.Source)\bin\condor_vm_vmware" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmp9A0E0F9B694CCED777F455EAADBFB802" Guid="80149BBB-151C-456E-8F85-B215920DAFFF">
+                <File Id="fil211208B7475D14668F301EAB5DA264FA" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9A0EA5F3F057B75EC6E4B81933380C38" Guid="7E2D6434-BF83-42A0-8C8D-E43FF6F5AC08">
+                <File Id="fil591C4CA486C2CE415FF8F8B302F7BBA5" KeyPath="yes" Source="$(var.Source)\bin\condor_mips.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9A4C136E9A2A0C80FFD796AC538B8C43" Guid="C1E8F5E6-6AD3-41A3-AF6E-56C8D8C8711E">
+                <File Id="fil9115FAE2142FA43B96D6584BD573960D" KeyPath="yes" Source="$(var.Source)\bin\condor_master.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9CA7103E9D128AA79672C244936E6E68" Guid="7B711650-E61A-4A53-933E-908EF0EFD66A">
+                <File Id="filFC56F7B507DE86A4B549DF91921D11A3" KeyPath="yes" Source="$(var.Source)\bin\wshelp64.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9CD3F9D37A1A9614020C035BFE9334B9" Guid="EB2FAA55-C9A5-44D0-9708-3E3F052847E7">
+                <File Id="filE52083EF6D85234026F876C0C5693341" KeyPath="yes" Source="$(var.Source)\bin\condor_birdwatcher.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9D3FC1A96448CBA30C25D440FF6E1853" Guid="D426D49A-573F-4A19-BD7E-49427ADF1005">
+                <File Id="fil8880CEF20E776F184CADD2DC12112D0F" KeyPath="yes" Source="$(var.Source)\bin\accountant_log_fixer.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmp9EFECDAA4ED2D1F98C0D05E36085D196" Guid="E2731A12-8F9F-400E-92D2-8F4C60259460">
+                <File Id="fil50555350ECA7E81C9A74EAB72CBEFF8B" KeyPath="yes" Source="$(var.Source)\bin\CondorJavaWrapper.class" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmp9F9FA27DF407A806ED6DEED2A646C259" Guid="BB476AF8-C58D-42D4-BCF9-2F24C6FD7D5E">
+                <File Id="fil951CDEA09A19B312AC82994BE907EB28" KeyPath="yes" Source="$(var.Source)\man\condor_status.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAC4CDDE2AD2AD42BFF96FF3852B40B3A">
+            <Component Id="cmpA1332B4B741FBDF6E5A5F2F6A6297E6E" Guid="C6265B21-7429-4BAF-8989-F93E5853D79E">
+                <File Id="fil0D45F46AC5DD3CA03DE5FFD2F0341228" KeyPath="yes" Source="$(var.Source)\etc\WiX\license.rtf" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpA1B64C9FDC11A7D8DE4F2D24A39067A7" Guid="8139A616-49EA-4C25-B157-AC802AE20CFD">
+                <File Id="fil0762500D268752C2A43E28B0D107ED51" KeyPath="yes" Source="$(var.Source)\bin\condor_testwritelog.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpA21558B490F0C13A979E25F231AB8311" Guid="EE6B2E0D-29F6-4606-9348-292915D265A2">
+                <File Id="fil218233DA97DE0E86F310704F31FD3666" KeyPath="yes" Source="$(var.Source)\bin\condor_defrag.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmpA31E5C943B03F23FEA37E8C1B3D02F38" Guid="C0635CE7-F3CB-479A-9035-97098DC954C7">
+                <File Id="fil4D9B26F19C0D73235851C77DE431272C" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorExecCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpA3D8E9F6F2C32F2A77A3982A141A8545" Guid="59DB829D-CFE7-4D60-8455-85F08631041E">
+                <File Id="filC69225A27531A6B1C47316ADBF56923F" KeyPath="yes" Source="$(var.Source)\man\condor_userlog.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpA42465953D76615835E6D015B5578D57" Guid="5AD399FC-AA63-47FC-B3AB-3252181D5BEF">
+                <File Id="fil7601122DE3DFE95E36D82995F0662E7B" KeyPath="yes" Source="$(var.Source)\bin\condor_urlfetch.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpA4D567FC3A53B28675EF63A423251739" Guid="9FD0EFFE-FFBB-4B30-8F92-3F2FE0206C69">
+                <File Id="fil18847F91355A807BBC8380CD9D6A360A" KeyPath="yes" Source="$(var.Source)\man\condor_findhost.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpA51FFE47D97FA36FADC39F496DBFDE4F" Guid="2E71B848-31BE-4ED4-967D-1D6713D9C348">
+                <File Id="filCFF63D02F66E4F3A2760B321D18F5B42" KeyPath="yes" Source="$(var.Source)\man\condor_userprio.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirDD004FBEFF4275BECF599B41EEB3329B">
+            <Component Id="cmpA59C563A183F2ABC6B2990B9BC55DE75" Guid="0F717990-48AC-4C78-A2CA-176E1D52A4F9">
+                <File Id="fil36C41564DF36B22E63013AF8BE8F3562" KeyPath="yes" Source="$(var.Source)\etc\WiX\Bitmaps\dlgbmp.bmp" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpA59E0275C55917AFE373A56B7201706D" Guid="7C5BF216-5A33-46C9-8DF2-083A9207A16E">
+                <File Id="filCEFDFC0FA4B5A3723BE91BEED79F8DC4" KeyPath="yes" Source="$(var.Source)\bin\condorapi.lib" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpA602D9B98C470A4CB2DEB1D1B5EBA31E" Guid="84EEDC75-4F7A-4968-B7BC-33ADC77C5390">
+                <File Id="filC5505A36A1B76766F79CD03A109F0B67" KeyPath="yes" Source="$(var.Source)\man\condor_dagman_metrics_reporter.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmpA68458731ECFC48D91CFC45F193A1E1C" Guid="41DCDBA3-6F0C-448C-8E86-6175B186861F">
+                <File Id="fil5E863787703EDF56241049D92718EF51" KeyPath="yes" Source="$(var.Source)\include\user_log.c++.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmpA69076F3C4FF3CE69000E54B500A7EAD" Guid="FCCD32E6-1621-4F71-9309-56E98FFF9671">
+                <File Id="filAF2D86F1F7250F95DCE75CE3777D234C" KeyPath="yes" Source="$(var.Source)\include\iso_dates.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpA8D976F1388E3F0B1023CDEA1D6F515B" Guid="897FCE29-EAB2-47F4-B7E9-BA9452421420">
+                <File Id="filF6DF53E7B37DD08BA8A893C06632502E" KeyPath="yes" Source="$(var.Source)\bin\condor_sos.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpA90EFAD2B63E7D33F510DB3B6811ABD1" Guid="F9F54764-54D3-4048-AA8D-B55A447E1250">
+                <File Id="fil1532DF98A75225381B69EDD1C48DF9B9" KeyPath="yes" Source="$(var.Source)\bin\condor_suspend.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpA98424B88D320F6A640F9E8AB4F21DEC" Guid="19840FC4-F8C8-4F76-AF63-C52F94A8D653">
+                <File Id="fil4B18E4B89A67B09716BFE15A4822AD3C" KeyPath="yes" Source="$(var.Source)\bin\condor_starter.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpA9DE0719F32C2819C810BF7BFF9CC222" Guid="E20AA8D8-F381-4BFF-A578-1B0D9F8F69F8">
+                <File Id="fil97BA912E06871D36F09C63D5B4F065CB" KeyPath="yes" Source="$(var.Source)\man\condor_suspend.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpAC1131CEC3963E6DBB95BEE43D9AD386" Guid="CDD6A2F1-0F94-4ABF-A7C3-4DD56C78FF38">
+                <File Id="fil2E20577E7EFF90110B17B08D2FE8A990" KeyPath="yes" Source="$(var.Source)\man\condor_compile.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpADB184D2BD95409DC7C44EAAF7FC533F" Guid="C9487477-77C0-473A-8A2A-BC01309E2C82">
+                <File Id="fil705685FA751768715EEC29856D04331F" KeyPath="yes" Source="$(var.Source)\bin\condor_had.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir5FB01AF056D922CAAA5C945AC9F80224">
+            <Component Id="cmpAE44F35F5016DA1668EE3921CA64127B" Guid="EE6BD4C7-8B8A-487D-BF12-F6DF84F428F2">
+                <File Id="filA462590FA296AFA99D0E70E03C82B82C" KeyPath="yes" Source="$(var.Source)\lib\python\htcondor.lib" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpAF0B4587109E2E96EAD0CA624848C774" Guid="0B79AEE8-8C35-4DDB-AA30-7AEC15B2B9BA">
+                <File Id="fil80D4B6DC731908986673A672A6D78406" KeyPath="yes" Source="$(var.Source)\man\condor_store_cred.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpAFCE6610D57910E69506722A545FBD95" Guid="20FE1354-E64D-4BEF-8CD9-1A85DA9AF727">
+                <File Id="filE4C62B78E040FFF64F43D2D347407B56" KeyPath="yes" Source="$(var.Source)\bin\scimark2lib.jar" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpB075E7B0E2F78D236CEB8B6C41791C00" Guid="9A819E5F-FA98-47B5-B2F3-6A6E38DDE9F2">
+                <File Id="fil75EAE501B11E76B03612EB825CECA575" KeyPath="yes" Source="$(var.Source)\bin\condor_findhost.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpB15B82220408F21CD055BD242948BF39" Guid="1CBB3D04-ECEC-4181-9039-83868FD38025">
+                <File Id="fil684FB9B00AD644AE8F9BDA4D7BE724DC" KeyPath="yes" Source="$(var.Source)\bin\condor_c-gahp_worker_thread.exe">
+                    <FirewallException Id="FWX14" Name="condor_c-gahp_worker_thread.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpB1ACFA6FB5B7E566AA6C9745118D679A" Guid="AA56CB45-3DCD-409A-A123-6DA2D3300CEB">
+                <File Id="fil26872E2FCC24AA36E311F019F36EF2B4" KeyPath="yes" Source="$(var.Source)\man\condor_fetchlog.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpB3CA50C7621926E43A74A76C810060FA" Guid="DB41E34E-A976-40A9-9238-1EF5E4A33532">
+                <File Id="filA4BCE9FBFAE5CDEC74FD89AFADF53E57" KeyPath="yes" Source="$(var.Source)\man\condor_vacate.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpB52448D77BC39D340669023A17A6CAEE" Guid="6CC7B7EE-FE97-4390-BFEB-03231E2D5D66">
+                <File Id="fil35D69A95977655FCF028E7C386AD9231" KeyPath="yes" Source="$(var.Source)\man\condor_stats.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpB6131534035B1FB59DAA7DF4E2BE7D55" Guid="358271C3-8DDA-4801-A7AA-E2743F106B45">
+                <File Id="fil7F8D36F18146A16A9450FA2493BD678C" KeyPath="yes" Source="$(var.Source)\man\condor_pool_job_report.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpB6AAF000BD0A7963BC333DD050BB9B6C" Guid="5113BFEF-C8B2-4719-BB53-EDA4712BC6D7">
+                <File Id="fil511CD0F9E1D9F48897F4361B1C9DFFE6" KeyPath="yes" Source="$(var.Source)\man\condor_prio.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpB74493D67F878B4772391486FF600DA1" Guid="80259E40-AB72-4F54-83C4-5C9C0731DCA5">
+                <File Id="filA11DD9DA9597A9F1713AA2C26AF1BDD0" KeyPath="yes" Source="$(var.Source)\bin\condor_mail.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpB84A0CAA0EA1038C57167FA309E00818" Guid="01030461-986B-4DB6-AAFE-34D7CDF23BA2">
+                <File Id="fil6C96B18504402CFBDA79CDDE812C7409" KeyPath="yes" Source="$(var.Source)\man\condor_ssh_to_job.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpB90E7144B62E2AF135E6CB597B30D310" Guid="E157DF0F-EC3E-478D-99A3-298C542A60DF">
+                <File Id="fil88ED1710D06F41CC6DA3484E08A4CB21" KeyPath="yes" Source="$(var.Source)\man\condor_transform_ads.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir5FB01AF056D922CAAA5C945AC9F80224">
+            <Component Id="cmpB985ACCD33900464FE475654714521B7" Guid="ACD1C43E-E60A-45BB-A327-17D92ECB8E43">
+                <File Id="filB786A799CFD42107F67A2B5FA67DD3D5" KeyPath="yes" Source="$(var.Source)\lib\python\htcondor.cp36-win_amd64.pyd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpBB8D7F5206BF6BEA16844E733E68767F" Guid="F4FFAC77-8E7B-47C9-9BF0-80B063E4DD6E">
+                <File Id="filEDDA5C98D1FA906EC5B513B6D7C5F88F" KeyPath="yes" Source="$(var.Source)\bin\condor_shadow.exe">
+                    <FirewallException Id="FWX10" Name="condor_shadow.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpBBF96B97E9C407B5619CC0DDAAD6F057" Guid="B6FB24E3-1490-4960-BA18-34958CFBBF8D">
+                <File Id="filEE598F7F01619568E02DD7FBC460C4BC" KeyPath="yes" Source="$(var.Source)\bin\multifile_curl_plugin.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpBC29331B008E3FC57DC3F77FCEDBFD94" Guid="F380AB58-0FC9-42BA-A2E4-DFC606F02C19">
+                <File Id="filA5E1FFBBBE7E473638CFE9D60DF870CA" KeyPath="yes" Source="$(var.Source)\bin\condor_schedd.exe">
+                    <FirewallException Id="FWX2" Name="condor_schedd.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpBCC296EA90A6032D41B349BC67699227" Guid="CAF04800-B250-40F5-BE88-3DE6B2412973">
+                <File Id="fil0915AA30D15CED2B9B4BD68146C41EB9" KeyPath="yes" Source="$(var.Source)\bin\pcre.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpBE1BC15D96ED57A943209265CB16186D" Guid="79F5877B-2E72-4846-BCD9-A89EAF73DFA6">
+                <File Id="filFE797C87D261515A7EF83DD1ED2EFB83" KeyPath="yes" Source="$(var.Source)\bin\data_plugin.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmpBE515B56962657AC806D2EF415960E30" Guid="1C6F74C0-7104-4EDA-8D48-2749190EF86A">
+                <File Id="fil1BEFFB4387CEE81A0721312518DB4D18" KeyPath="yes" Source="$(var.Source)\include\condor_holdcodes.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpC053CB0CE9DB86F4322A57960DC3F2B8" Guid="17BEF701-DDB1-4B03-8B56-1834C723E6CA">
+                <File Id="fil49DDD51EF3C964A90A4E4E8D042816FA" KeyPath="yes" Source="$(var.Source)\man\condor_continue.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmpC0F6E6228407BDC58E43FEE98DAFCA23" Guid="F4FF9A05-F28D-4873-8753-1321E7066A73">
+                <File Id="filC5DDE40FB8A3D32667E7E9256292DB22" KeyPath="yes" Source="$(var.Source)\include\condor_header_features.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmpC28365B03086280BD86648C930F777D3" Guid="96B53AEC-F108-4A8C-9296-700A351164E6">
+                <File Id="filE664DEF82BE95BBF87EE3CDFA6D45A65" KeyPath="yes" Source="$(var.Source)\include\condor_classad.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir5FB01AF056D922CAAA5C945AC9F80224">
+            <Component Id="cmpC52ED270E7B511873A8B200915C85C2D" Guid="4F05BF08-0844-48A7-8AC1-B3EBAE5AB6C0">
+                <File Id="fil08B086315578DA67729CC079C48C512D" KeyPath="yes" Source="$(var.Source)\lib\python\htcondor.pyd" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpC579D352F5AD6A1AA45649A1ADDBC81E" Guid="83DADDD1-D274-4BD0-B78D-C0B0A02C47B8">
+                <File Id="fil9387D8037A9AF1D5082E5B9CDFF73E4E" KeyPath="yes" Source="$(var.Source)\bin\condor_stats.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpC653AD3940DE442610E3D1183216007D" Guid="324D8CDD-30B3-4CD0-A365-CA8B832A9D06">
+                <File Id="fil4D959B6E03ADA3DC57675C9ED5A2DBDD" KeyPath="yes" Source="$(var.Source)\man\condor_restart.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpCA62169080E46D1CE1D34F2CE7C252BC" Guid="579E139E-62FD-4982-9615-60C0B6B851F0">
+                <File Id="fil46066134226D146408852A440B272ABA" KeyPath="yes" Source="$(var.Source)\bin\condor_on.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Component Id="cmpCD635A63DD791E39CB9DAAF139CE2839" Guid="90136668-08A5-40A9-AB75-4D3D54772D22">
+                <File Id="fil4E8C86276350CDB7A7B66869B8A4F441" KeyPath="yes" Source="$(var.Source)\etc\condor_config.submit.generic" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpCF0A805A171E66F337F4F3F2615CF8E1" Guid="3DC9BDC2-8330-4419-84CA-A89FC43D3831">
+                <File Id="fil0946B4EFFFE25A462EC4B397956AF9EC" KeyPath="yes" Source="$(var.Source)\bin\condor_status.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpCF20D087853C3DDAC3F437A1ED5DE431" Guid="6BBEBFE4-CB9C-4F3C-8D78-072E3B735EAD">
+                <File Id="filAB9FA8CFFC2306B9D0C9EF228A3A09F8" KeyPath="yes" Source="$(var.Source)\bin\xpprof64.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD18B43304D2CD44DB10AE73EAFDF8563" Guid="281D41EB-449B-415C-A862-751F100DE7A1">
+                <File Id="fil252F7ED6AE11CAAF42761C411D6B57F6" KeyPath="yes" Source="$(var.Source)\bin\condor_ping.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD219A7A2AD66BD1310720F3861620122" Guid="EF2CD0F7-EE60-4EF6-8F59-AB945284AA14">
+                <File Id="filBBA32974B1DA8EC66A742E7EE80F2F70" KeyPath="yes" Source="$(var.Source)\bin\CondorUtils.pm" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD292C81021C2C0A6C8E9EEA1835EFC49" Guid="F5C87528-5A52-49C1-88ED-6394B02FE8E4">
+                <File Id="fil8F4E7174D131C8D5595380F7114F50EC" KeyPath="yes" Source="$(var.Source)\bin\condor_history.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD3FCEA6811EAD2996C579889FF89C34B" Guid="C7E0B152-D950-4A75-A80A-D37CBE33DAF8">
+                <File Id="filE81B6CAE634FE8BCE0EDDDDD3EAC4775" KeyPath="yes" Source="$(var.Source)\bin\condor_ft-gahp.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD412D8AB1A268A6803306009F5B000DC" Guid="E28E6E06-5E27-4CDA-8BE9-702CCF675EE8">
+                <File Id="fil4B9B83CF0CAC354C6CC06CC3BBDFC17A" KeyPath="yes" Source="$(var.Source)\bin\libeay32.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD5A66DDEBA7C750F84746AEEFE3CD75E" Guid="A2484FD2-374B-48C0-A150-7140C5B2B407">
+                <File Id="fil67B87B225954ABAD522E18EA9441D1C5" KeyPath="yes" Source="$(var.Source)\bin\condor_negotiator.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD7F342A23236ED6DC084DBA71AF3A664" Guid="794FA902-FAB6-48DF-B3E2-A292529439A0">
+                <File Id="filC27CBC85171E8C1B9D10ED7AF7A296E7" KeyPath="yes" Source="$(var.Source)\bin\krbcc64.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD8BCAA07057D009781E5AF4C2CC6E159" Guid="6BA5905C-7F43-4C55-BA3F-5891A1A52FD2">
+                <File Id="fil6331115B31594072718C6ADA4E0CA110" KeyPath="yes" Source="$(var.Source)\bin\condor_preen.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD8CF9699ED03FA2F94440FD9E525CAFF" Guid="1ECB842D-B7ED-4179-9A4E-8DA6D3B2918C">
+                <File Id="fil508AC66DD1CDBD2B90F72B9C1F7B2CF5" KeyPath="yes" Source="$(var.Source)\bin\condor_router_q.sh" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD94A19E16B99F13852F114F6B0A36F5E" Guid="0750A1A4-D5F9-4749-AC67-A3FE9D1706B1">
+                <File Id="fil5E7471369D49168A4562911C27019037" KeyPath="yes" Source="$(var.Source)\bin\condor_router_rm.sh" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpD9B0468E0E73CD11AFB9A2649FFC27D5" Guid="2813B3EA-29B0-4945-9257-687B7CEE579F">
+                <File Id="filA943BEAC7A25C92A415707A255A97EA8" KeyPath="yes" Source="$(var.Source)\bin\condor_version.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpDADD25BEC2C82272F13A24CB519925E6" Guid="E454819F-6D91-4FF4-BA45-39EBCF33F7B3">
+                <File Id="filA92AE8E08088287AC3BE2DA04DFC1C61" KeyPath="yes" Source="$(var.Source)\man\condor_drain.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpDBC371BF3A0C0501EEB64BEAAEAB665F" Guid="D9A524FC-8F4F-4A2D-A9F0-654DF6B8F29D">
+                <File Id="filDA87A9344633F53C9EEC5E57D0C00167" KeyPath="yes" Source="$(var.Source)\bin\condor_hold.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpDD6E78D7430B322850A7759ED286F76D" Guid="264AD654-02F6-4E74-A537-656CBB31B28F">
+                <File Id="filDCB4940E6C9EA4FA6931A59F90C5E334" KeyPath="yes" Source="$(var.Source)\bin\condor_reconfig.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Component Id="cmpDE8B9CF117C193C5C0F3FECECB957831" Guid="93C86C27-6969-4608-B016-79E628B309D2">
+                <File Id="fil96954C90F28BBE5B6056CAB17ADA2750" KeyPath="yes" Source="$(var.Source)\etc\convert_config_to_win32.awk" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpDEAD75116650E090C12D55398C5B749B" Guid="74E4E3F7-6907-41D9-AD05-57689DDD4308">
+                <File Id="filD6BEBA3F8041B60DC1C7FCE5CE475D3A" KeyPath="yes" Source="$(var.Source)\bin\condor_test_match.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpDF29CAA17FCCD4C0050BD95CAFAD8A3A" Guid="A4AAC659-67DC-4E57-81B0-BAE9A4F99FA7">
+                <File Id="fil7757AB53033C31E221C7C3F088A263E9" KeyPath="yes" Source="$(var.Source)\bin\condor_rooster.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpDF683EB67393A91969064BEBAFB1123B" Guid="AF69EF67-FF72-4B7A-9025-71586B51E279">
+                <File Id="fil27118AB0285AB3F4DCB132D9291AD483" KeyPath="yes" Source="$(var.Source)\man\condor_top.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpE02329A2E2163C3DC1F58125A71DF42F" Guid="5E3ACB62-1357-489D-AB85-6B1A6B676DBB">
+                <File Id="filD9C0D5F573A0D468B4CED3A95AFF6FF2" KeyPath="yes" Source="$(var.Source)\bin\condor_router_history.py" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpE0A6AB270028E71D87B3DE8D3FF27F81" Guid="755226A6-EFDB-4F30-A9B4-D0A3067090CA">
+                <File Id="filBC26AA390F756F162E65A7A5A2166ED7" KeyPath="yes" Source="$(var.Source)\bin\condor_credd.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmpE24A9E2B220141015932D6F98CD6766B" Guid="F80E8259-AEEE-4467-B0CE-9025F6EC27B8">
+                <File Id="fil4BC22B26E0C14A1EF9B90457D3DB65CB" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorPoolCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpE4D2FC09EE2573F55A1D44049FBAD7E9" Guid="7C3FA07C-7D3E-464F-95E9-F8386106A25D">
+                <File Id="filDF9593903C993229A4834A29C598F22C" KeyPath="yes" Source="$(var.Source)\man\condor_run.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmpE4D4CB0A15F4D472DF0214817242BEF7" Guid="3026E6B0-249C-4259-BCF0-ADD633B4E56A">
+                <File Id="fil9339D6940DF5F3FCA419A405838192E9" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorUpHostDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpE5A107023356BCB2F440F3C4CF71464C" Guid="6665AF54-5B4E-4C23-BC20-A2BCDC123C47">
+                <File Id="fil61FA4C68812C4835B397C332E3E8645C" KeyPath="yes" Source="$(var.Source)\bin\comerr64.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpE7DEAF87E00074F641E37265C858098B" Guid="70209816-0B25-4DAF-A270-00C10C9F60AA">
+                <File Id="fil58AEAFF2CE1362BC190F44531843DFF9" KeyPath="yes" Source="$(var.Source)\bin\condor_collector.exe">
+                    <FirewallException Id="FWX3" Name="condor_collector.exe" Scope="any" IgnoreFailure="yes" xmlns="http://schemas.microsoft.com/wix/FirewallExtension" />
+                </File>
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpE7DEB6969AC5980BEB6A33D8187E1448" Guid="B462763B-09F7-41FE-98A0-123A82D4F40B">
+                <File Id="fil6CE173B19E293FA42B874CF9BD1B61C9" KeyPath="yes" Source="$(var.Source)\bin\condor_procd.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpEA1A21D6BE03C94A343B725A6B0FDB63" Guid="4B749111-CD20-41DD-88E6-F9E9F86FBC90">
+                <File Id="filBDDE9FB049AE49F336C0690C91C2612D" KeyPath="yes" Source="$(var.Source)\man\condor_hold.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpED6883ADADF68C255773041F552A8CEF" Guid="386EE52C-4403-4A60-BE7A-0E9D6A5749EA">
+                <File Id="fil61E776E88E68BC3798CD154B31906C50" KeyPath="yes" Source="$(var.Source)\bin\boost_python27-vc141-mt-x32-1_68.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpF15D9883BFB94202C6D2E74FDD296A64" Guid="83C4B5D5-8181-4E37-810E-D8B12E789834">
+                <File Id="fil34A486256A0DCD6F0E63F9D8DEF5E4F6" KeyPath="yes" Source="$(var.Source)\bin\condor_qedit.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpF2E2EDA5C85E447A9801571BD26028B8" Guid="A77E85F6-145C-4BB6-9647-4643A8A81075">
+                <File Id="fil634C22820BCB66152DF47FE9AE8E25FB" KeyPath="yes" Source="$(var.Source)\bin\condor_replication.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpF306DAFB123AFAFBDA4729640762EC3F" Guid="633E7FDF-4FA6-40AC-8FBC-AD36DD0E2C88">
+                <File Id="filE2ED0EF9D0456C9E1AB1944336995859" KeyPath="yes" Source="$(var.Source)\man\condor_router_history.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Component Id="cmpF36C80AE2A7361C4B0EBDC5CA2D6D4EA" Guid="F543ADC4-8EA2-47D1-88FB-79F62AEE5220">
+                <File Id="fil79040E8B003E8F820715B87BA3265D3E" KeyPath="yes" Source="$(var.Source)\etc\condor_config.generic" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpF5CB4AF6D8FE61404A008A280C1F54C8" Guid="0EFE5B58-1759-4FB8-BB94-50533FE3FDD4">
+                <File Id="filA0BDCFC70A1D7B7D4E66392FBBE7F1EE" KeyPath="yes" Source="$(var.Source)\bin\condor_shadow.pdb" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpF798F7BCE5847A837552D1DE69E6C9E6" Guid="C37694FD-B263-4F6F-A576-B32DCA57E535">
+                <File Id="fil5FE76EE002BA7C9FEEE26B222677C793" KeyPath="yes" Source="$(var.Source)\bin\condor_cod.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpF85AAD86BD1248FEEBA6609EA6FF4F1C" Guid="23868145-09B6-463F-89C0-3F572D25CE7C">
+                <File Id="fil47080C21BB826098F4235AA8253BEE5F" KeyPath="yes" Source="$(var.Source)\man\bosco_ssh_start.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpF8C0114250877B1DFCDF272B36662D21" Guid="8C1372D8-233F-4233-BC4E-20864D81565B">
+                <File Id="filE87C1CDFEAF27B00BC6F3F37C9A0B411" KeyPath="yes" Source="$(var.Source)\man\condor_checkpoint.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpF8E09DB2D7846ABB4F7F248B490D1D51" Guid="53295242-3039-45B3-9EC2-C27D0B84207D">
+                <File Id="fil22542327FD95D56EB4CBA5598BE01527" KeyPath="yes" Source="$(var.Source)\man\condor_power.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpF9CF1198241FFEF57428A942D67B393A" Guid="ED7963D3-9C63-46D3-8DDC-9855718410E8">
+                <File Id="filD2F6FE61387ACFEF77097E8DCFCAFB56" KeyPath="yes" Source="$(var.Source)\bin\gssapi64.dll" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpFB2679ECE21D99B6B20475FB3CEFAE89" Guid="1DC3EC8A-692E-440C-B83E-087C4B8660F1">
+                <File Id="filAED60EBFD062BFDB16236A8B0D776CF3" KeyPath="yes" Source="$(var.Source)\man\condor_annex.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir6221EB850E09931E3ACE5953B15206A1">
+            <Component Id="cmpFB8DE7FCB85DD7B7198A5C46D567A128" Guid="071A1888-BF59-4374-9C82-2C7A6EDB29F1">
+                <File Id="filEFBA755D3DB00DF9FFBC5BCC522AAEE7" KeyPath="yes" Source="$(var.Source)\etc\WiX\xml\CondorVMCfgDlg.wxs" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpFBB3D6198EF54F673EC0B390194830EB" Guid="EB7CB439-48E2-4156-B56C-D838E6746A86">
+                <File Id="fil401CF8C0F9C8F987EB847F5E6A8A5677" KeyPath="yes" Source="$(var.Source)\bin\Condor.pm" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpFCB852E3A475C33EB3AEB973C62F7C26" Guid="DE9387BA-61E2-407E-B94E-FEF6F2117197">
+                <File Id="filF96D03E8A95B5E43808581AEA8821A09" KeyPath="yes" Source="$(var.Source)\man\condor_ping.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAFF7B92993BC1C2E79077C8C0DB42FFC">
+            <Component Id="cmpFCF9917746A4E97A5AA27D2B7E86CD73" Guid="E2B3E5D1-3721-45D4-BA88-B944573DD374">
+                <File Id="fil125EB2449EF4B94AF2349C86D3ED2BB3" KeyPath="yes" Source="$(var.Source)\bin\condor_submit.exe" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpFD0EC2AA7014EE06BA72A63E82416291" Guid="388073E0-ED3E-4A6D-934B-0630F55E9E5B">
+                <File Id="filBB18F29CD636D3DE8F898395C6AA1F66" KeyPath="yes" Source="$(var.Source)\man\condor_rm.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirCBE6BB4EC07773FC2F3D54995D0C2E50">
+            <Component Id="cmpFE529A2D23CA0777BAAB26380DFF6935" Guid="9ABDD09B-9648-4C2F-A9E7-A95380563417">
+                <File Id="fil6B847BFE47DA7AE3735A7EFC190760E3" KeyPath="yes" Source="$(var.Source)\man\condor_advertise.1.gz" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirE943AC7232806A4D114801E13C414E20">
+            <Component Id="cmpFEE09D80334332B921997C4B04A169D6" Guid="95C93A96-1D02-4F65-8A4E-B6B125EB0AA1">
+                <File Id="fil1084047B3517FE2080AA68EA7DF24999" KeyPath="yes" Source="$(var.Source)\include\chirp_client.h" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAAA193B5A5015AADBAB7F9C7DDB27425">
+            <Directory Id="dir5FB01AF056D922CAAA5C945AC9F80224" Name="python" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAC4CDDE2AD2AD42BFF96FF3852B40B3A">
+            <Directory Id="dir6221EB850E09931E3ACE5953B15206A1" Name="xml" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dir68F1EFAA7C46594FB79D1195A3DF8B79">
+            <Directory Id="dirAC4CDDE2AD2AD42BFF96FF3852B40B3A" Name="WiX" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirAC4CDDE2AD2AD42BFF96FF3852B40B3A">
+            <Directory Id="dirDD004FBEFF4275BECF599B41EEB3329B" Name="Bitmaps" />
+        </DirectoryRef>
+    </Fragment>
+</Wix>
