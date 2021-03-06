@@ -1,5 +1,0 @@
-ARG BASE_IMAGE=aquaveollc/condor-base:0.0.1
-FROM $BASE_IMAGE
-
-# Set up config files
-COPY conf/condor.d/collector /etc/condor/config.d/
