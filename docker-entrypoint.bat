@@ -1,3 +1,3 @@
 @ECHO OFF
 
-powershell
+Condor\bin\condor_master -f -t
