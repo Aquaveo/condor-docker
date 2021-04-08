@@ -6,7 +6,7 @@ ADD https://download.microsoft.com/download/6/A/A/6AA4EDFF-645B-48C5-81CC-ED5963
 RUN C:\vc_redist.x64.exe /quiet /install
 
 # Add Condor files
-ADD condor/ /condor
+ADD condor/ /Condor
 RUN md \condor\log \
   ; md \condor\execute
 
@@ -18,4 +18,7 @@ ENV CONDOR_CONFIG="/condor/etc/condor_config.generic"
 ENV _CONDOR_DESIGNATED_PROJECT="TEST"
 ENV _CONDOR_CONDOR_HOST="condor_collector"
 ENV JOB_DEFAULT_REQUESTMEMORY=128
+
+EXPOSE 9618
+
 CMD ["/docker-entrypoint.bat"]
