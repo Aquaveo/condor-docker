@@ -7,8 +7,14 @@ RUN C:\vc_redist.x64.exe /quiet /install
 
 # Add Condor files
 ADD condor/ /Condor
-RUN md \condor\log \
-  ; md \condor\execute
+RUN md \Condor\log \
+  ; md \Condor\execute
+
+# Set permissions
+RUN $Acl = Get-Acl "C:\Condor\execute" \
+  ; $Ar = New-Object System.Security.AccessControl.FileSystemAccessRule('User Manager\ContainerAdministrator', 'FullControl', 'ContainerInherit,ObjectInherit', 'None', 'Allow') \
+  ; $Acl.SetAccessRule($Ar) \
+  ; Set-Acl "C:\Condor\execute" $Acl
 
 # Set up config files
 COPY docker-entrypoint.bat /
