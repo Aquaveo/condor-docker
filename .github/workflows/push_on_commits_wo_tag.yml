@@ -40,7 +40,7 @@ jobs:
       run: |
         echo $TAG
     - name: build and push tag for docker base
-      uses: aevea/action-kaniko@v0.3.2
+      uses: aevea/action-kaniko@v0.6.1
       with:
         # Docker registry where the image will be pushed
         registry: docker.io
@@ -59,7 +59,7 @@ jobs:
         # Dockerfile filename
         build_file: ${{github.workspace}}/Dockerfile
     - name: build and push tag for docker collector
-      uses: aevea/action-kaniko@v0.3.2
+      uses: aevea/action-kaniko@v0.6.1
       with:
         # Docker registry where the image will be pushed
         registry: docker.io
@@ -79,7 +79,7 @@ jobs:
         build_file: ${{github.workspace}}/Dockerfile.collector
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker scheduler
-      uses: aevea/action-kaniko@v0.3.2
+      uses: aevea/action-kaniko@v0.6.1
       with:
         # Docker registry where the image will be pushed
         registry: docker.io
@@ -99,7 +99,7 @@ jobs:
         build_file: ${{github.workspace}}/Dockerfile.scheduler
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker worker
-      uses: aevea/action-kaniko@v0.3.2
+      uses: aevea/action-kaniko@v0.6.1
       with:
         # Docker registry where the image will be pushed
         registry: docker.io
@@ -119,7 +119,7 @@ jobs:
         build_file: ${{github.workspace}}/Dockerfile.worker
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker standalone
-      uses: aevea/action-kaniko@v0.3.2
+      uses: aevea/action-kaniko@v0.6.1
       with:
         # Docker registry where the image will be pushed
         registry: docker.io
