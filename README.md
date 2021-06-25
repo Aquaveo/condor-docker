@@ -1,4 +1,4 @@
-# Tethys Condor Charts Repo
+# Tethys Condor Charts Repo 
 This repository contains the helm chart for condor docker. These charts are designed for use by Tethys apps, and has not been tested for usability in stand-alone mode.
 
 ### How to install
