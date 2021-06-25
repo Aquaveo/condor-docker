@@ -80,7 +80,7 @@ jobs:
         # Dockerfile filename
         build_file: Dockerfile.collector
         # Path to build context
-        path: ${{github.workspace}}
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker scheduler
       uses: aevea/action-kaniko@v0.6.1
@@ -102,7 +102,7 @@ jobs:
         # Dockerfile filename
         build_file: Dockerfile.scheduler
         # Path to build context
-        path: ${{github.workspace}}
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker worker
       uses: aevea/action-kaniko@v0.6.1
@@ -124,7 +124,7 @@ jobs:
         # Dockerfile filename
         build_file: Dockerfile.worker
         # Path to build context
-        path: ${{github.workspace}}
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker standalone
       uses: aevea/action-kaniko@v0.6.1
@@ -146,5 +146,5 @@ jobs:
         # Dockerfile filename
         build_file: Dockerfile.standalone
         # Path to build context
-        path: ${{github.workspace}}
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
