@@ -50,7 +50,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile
+        build_file: Dockerfile
+        # Path to build context
+        path: .
     - name: build and push tag latest for docker base
       uses: aevea/action-kaniko@v0.6.1
       with:
@@ -69,7 +71,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile
+        build_file: Dockerfile
+        # Path to build context
+        path: .
     - name: build and push tag for docker collector
       uses: aevea/action-kaniko@v0.6.1
       with:
@@ -88,7 +92,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.collector
+        build_file: Dockerfile.collector
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag latest for docker collector
       uses: aevea/action-kaniko@v0.6.1
@@ -108,7 +114,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.collector
+        build_file: Dockerfile.collector
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker scheduler
       uses: aevea/action-kaniko@v0.6.1
@@ -128,7 +136,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.scheduler
+        build_file: Dockerfile.scheduler
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag latest for docker scheduler
       uses: aevea/action-kaniko@v0.6.1
@@ -148,7 +158,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.scheduler
+        build_file: Dockerfile.scheduler
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker worker
       uses: aevea/action-kaniko@v0.6.1
@@ -168,7 +180,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.worker
+        build_file: Dockerfile.worker
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag latest for docker worker
       uses: aevea/action-kaniko@v0.6.1
@@ -188,7 +202,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.worker
+        build_file: Dockerfile.worker
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag for docker standalone
       uses: aevea/action-kaniko@v0.6.1
@@ -208,7 +224,9 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.standalone
+        build_file: Dockerfile.standalone
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
     - name: build and push tag latest for docker standalone
       uses: aevea/action-kaniko@v0.6.1
@@ -228,5 +246,7 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile.standalone
+        build_file: Dockerfile.standalone
+        # Path to build context
+        path: .
         extra_args: "--build-arg BASE_IMAGE=aquaveollc/condor-base:latest"
