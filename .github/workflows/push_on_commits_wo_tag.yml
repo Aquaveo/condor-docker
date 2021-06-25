@@ -57,7 +57,8 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: ${{github.workspace}}/Dockerfile
+        build_file: Dockerfile
+        # Path to build context
         path: ${{github.workspace}}
     - name: build and push tag for docker collector
       uses: aevea/action-kaniko@v0.6.1
