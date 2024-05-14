@@ -35,7 +35,7 @@ before_script:
   script:
     - /kaniko/executor 
         --context $CI_PROJECT_DIR
-        --dockerfile $CI_PROJECT_DIR/Dockerfile 
+        --dockerfile $CI_PROJECT_DIR/Dockerfile.base
         --destination $CI_REGISTRY_IMAGE/condor-base:$CI_COMMIT_REF_SLUG-dev
         --cache=true
         --cache-repo $CI_REGISTRY_IMAGE/cache
