@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: condor-scheduler
+  name: condor-scalecon
   labels:
-    app.kubernetes.io/name: condor-scheduler
+    app.kubernetes.io/name: condor-scalecon
     helm.sh/chart: {{ include "condor-manager.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -11,19 +11,19 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: condor-scheduler
+      app.kubernetes.io/name: condor-scalecon
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: condor-scheduler
+        app.kubernetes.io/name: condor-scalecon
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       imagePullSecrets:
         - name: gitlab-registry
       containers:
-        - name: condor-scheduler
-          image: "{{.Values.scheduler.image.repository}}:{{ .Values.scheduler.image.tag }}"
+        - name: condor-scalecon
+          image: "{{.Values.scalecon.image.repository}}:{{ .Values.scalecon.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: _CONDOR_CONDOR_HOST
@@ -37,33 +37,22 @@ spec:
             - name: condor
               containerPort: 9618
               protocol: TCP
-          livenessProbe:
-            exec:
-              command:
-              - /usr/local/bin/htcondor-schedd-liveness
-            initialDelaySeconds: 10
-            periodSeconds: 30
-          readinessProbe:
-            tcpSocket:
-              port: 22
-            initialDelaySeconds: 15
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: pool-password
               mountPath: /etc/condor/pool_password
-            - name: condor-authorized-keys
+            - name: worker-config
               readOnly: true
-              mountPath: /var/lib/condor/keys
+              mountPath: /data/worker.json
       volumes:
         - name: pool-password
           secret:
             defaultMode: 0600
             secretName: condor-pool-password
-        - name: condor-authorized-keys
-          secret:
-            defaultMode: 0600
-            secretName: condor-authorized-keys
+        - name: worker-config
+          configMap:
+            name: condor-worker-json
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

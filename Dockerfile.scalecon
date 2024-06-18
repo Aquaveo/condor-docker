@@ -1,0 +1,19 @@
+ARG BASE_IMAGE=aquaveollc/condor-base:0.0.1
+FROM $BASE_IMAGE
+
+# Install Python
+RUN apt-get update -qq \
+ && apt-get -yqq install python3 python3-pip python3-venv > /dev/null \
+ && rm -rf /var/lib/apt/lists/*
+
+ # Create the application venv
+RUN python3 -m venv /apps/scalecon/venv \
+ && /apps/scalecon/venv/bin/pip install --upgrade pip > /dev/null
+
+# Copy in the application
+ADD apps/scalecon /apps/scalecon
+RUN /apps/scalecon/venv/bin/pip install -r /apps/scalecon/requirements.txt > /dev/null
+
+# Set up config files
+COPY conf/supervisor.d/scalecon.conf /etc/supervisor/conf.d/
+COPY conf/condor.d/scalecon /etc/condor/config.d/

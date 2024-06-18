@@ -13,6 +13,15 @@ SLOT_TYPE_1_PARTITIONABLE=TRUE
 # Disable cgroups
 BASE_CGROUP =
 
+# Shutdown startd if idle for too long
+STARTD_NOCLAIM_SHUTDOWN = 600
+
+# Shutdown the master if the startd exits
+MASTER.DAEMON_SHUTDOWN = (STARTD_StartTime =?= 0)
+
+# Only start new jobs for an hour (To help with downscaling)
+START = MonitorSelfAge < 2 * 60 * 60
+
 # Set Custom ClassAd
 DESIGNATED_PROJECT = "all"
 STARTD_ATTRS = DESIGNATED_PROJECT

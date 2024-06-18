@@ -22,8 +22,8 @@ spec:
       imagePullSecrets:
         - name: gitlab-registry
       containers:
-        - name: {{ .Chart.Name }}
-          image: "aquaveollc/condor-collector:{{ .Values.image.tag }}"
+        - name: condor-collector
+          image: "{{.Values.collector.image.repository}}:{{ .Values.collector.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: _CONDOR_CONDOR_HOST

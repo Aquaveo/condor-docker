@@ -15,6 +15,29 @@ service:
   type: ClusterIP
   port: 9618
 
+scheduler:
+  image:
+    repository: aquaveollc/condor-scheduler
+    tag: latest
+
+collector:
+  image:
+    repository: aquaveollc/condor-collector
+    tag: latest
+
+scalecon:
+  image:
+    repository: aquaveollc/condor-scalecon
+    tag: latest
+
+worker:
+  image:
+    repository: aquaveollc/condor-worker
+    tag: latest
+  cpus: 1
+  memory: 2000
+  memory_limit: 2000
+
 resources: 
   requests:
     cpu: 100m
