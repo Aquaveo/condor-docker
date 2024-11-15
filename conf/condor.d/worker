@@ -13,15 +13,17 @@ SLOT_TYPE_1_PARTITIONABLE=TRUE
 # Disable cgroups
 BASE_CGROUP =
 
-# Shutdown startd if idle for too long
+# Shutdown startd if idle for too long (seconds)
 STARTD_NOCLAIM_SHUTDOWN = 600
 
 # Shutdown the master if the startd exits
 MASTER.DAEMON_SHUTDOWN = (STARTD_StartTime =?= 0)
 
-# Only start new jobs for an hour (To help with downscaling)
+# Only start new jobs a set amount of time (To help with downscaling)
+# Time is in seconds
 START = MonitorSelfAge < 2 * 60 * 60
 
-# Set Custom ClassAd
-DESIGNATED_PROJECT = "all"
-STARTD_ATTRS = DESIGNATED_PROJECT
+# Specify a dedicated scheduler to allow for parallel jobs
+# In k8s, this is specified by an environmental variable
+# DedicatedScheduler = "DedicatedScheduler@condor-scheduler-77b94566c5-fkbfs"
+STARTD_ATTRS = $(STARTD_ATTRS), DedicatedScheduler

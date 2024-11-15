@@ -20,6 +20,7 @@ SHARED_PORT_ARGS = -p 9618
 USE_SHARED_PORT = TRUE
 
 SCHEDD_ADDRESS_FILE = /var/lib/condor/.schedd_address
+COLLECTOR_HOST = condor-collector
 
 UPDATE_COLLECTOR_WITH_TCP = TRUE
 
@@ -28,3 +29,5 @@ JOB_DEFAULT_REQUESTMEMORY = $(JOB_DEFAULT_REQUESTMEMORY)
 STARTER_ALLOW_RUNAS_OWNER = False
 RunAsOwner = False
 TRUST_UID_DOMAIN = True
+
+SEC_PASSWORD_FILE = /etc/condor/pool_password/password

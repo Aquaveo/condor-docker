@@ -10,10 +10,20 @@ if [ -e  ~condor/keys/authorized_keys ]; then
     chmod 600 ~condor/.ssh/authorized_keys
 fi
 
-# Make sure that condor's run directory exists
-mkdir -p /run/condor
+# Do the same thing for the pool password
+if [ -e ~condor/pool_password/password ]; then
+    mkdir -p /etc/condor/pool_password
+    cp ~condor/pool_password/password /etc/condor/pool_password/password
+    chown -R condor /etc/condor/pool_password
+    chmod 600 /etc/condor/pool_password/password
+fi
+
+# Make sure that condor's directories exists
+mkdir -p /run/condor /var/spool/condor
 chown condor:condor /run/condor
 chmod 775 /run/condor
+chown condor:condor /var/spool/condor
+chmod 775 /var/spool/condor
 
 # Run HTCondor
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
