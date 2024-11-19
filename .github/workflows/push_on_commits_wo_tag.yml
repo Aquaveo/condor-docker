@@ -57,7 +57,7 @@ jobs:
         # Docker registry meant to be used as cache
         cache_registry: ${{ env.KANIKO_CACHE_REGISTRY }}
         # Dockerfile filename
-        build_file: Dockerfile
+        build_file: Dockerfile.base
         # Path to build context
         path: .
     - name: build and push tag for docker collector
