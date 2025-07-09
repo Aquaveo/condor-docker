@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=aquaveollc/condor-base:0.0.1
+ARG BASE_IMAGE=aquaveollc/condor-base:u24.04
 FROM $BASE_IMAGE
 
 # Tethys needs to be able to ssh into the scheduler
