@@ -8,6 +8,10 @@ if [ -e  ~condor/keys/authorized_keys ]; then
     chown -R condor ~condor/.ssh/
     chmod 700 ~condor/.ssh 
     chmod 600 ~condor/.ssh/authorized_keys
+    cp ~condor/keys/authorized_keys ~submituser/.ssh/
+    chown -R submituser ~submituser/.ssh/
+    chmod 700 ~submituser/.ssh 
+    chmod 600 ~submituser/.ssh/authorized_keys
 fi
 
 # Do the same thing for the pool password
