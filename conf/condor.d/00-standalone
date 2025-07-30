@@ -43,8 +43,4 @@ RUNBENCHMARKS = 0
 # Uncomment the lines below and do 'sudo condor_reconfig' if you wish
 # condor_q to show jobs from all users with one line per job by default.
 #CONDOR_Q_DASH_BATCH_IS_DEFAULT = False
-#CONDOR_Q_ONLY_MY_JOBS = False
-
-# --- Submit User Permissions ---
-SLOT1_USER = submituser
-STARTER_ALLOW_RUNAS_OWNER = False
+CONDOR_Q_ONLY_MY_JOBS = False
